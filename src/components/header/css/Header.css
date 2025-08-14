@@ -1,0 +1,109 @@
+/* =========================
+   Principal
+========================= */
+.header-container {
+  background-color: transparent; /* Sin color de fondo */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  height: 80px;
+  position: relative;
+  z-index: 10; /* Para que esté por encima del contenido */
+}
+
+/* =========================
+   Izquierdo
+========================= */
+.menu-principal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.menu-hamburguesa {
+  width: 25px;
+  cursor: pointer;
+}
+
+.titulo-menu-principal {
+  font-size: 1rem;
+}
+
+.buscador {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.img-buscador {
+  width: 20px;
+  margin-right: 0.4rem;
+  cursor: pointer;
+}
+
+/* Input escondido por defecto */
+.input-busqueda {
+  width: 0;
+  opacity: 0;
+  transition: width 0.4s ease, opacity 0.3s ease;
+  border: none;
+  border-bottom: 1px solid #000; /* Solo borde inferior */
+  outline: none;
+  font-size: 0.9rem;
+  background: transparent;
+}
+
+/* Cuando está activo, se expande */
+.input-busqueda.activo {
+  width: 200px;
+  opacity: 1;
+  padding: 0 0.3rem;
+}
+
+/* =========================
+   Centro
+========================= */
+.logo-principal {
+  position: absolute; /* Saca el logo del flujo */
+  left: 50%;
+  transform: translateX(-50%); /* Centra horizontalmente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Logo {
+  max-height: 100px;
+  margin-top: 20px;
+}
+
+/* =========================
+   Derecha
+========================= */
+.seccion-derecha {
+  display: flex;
+  align-items: center;
+}
+
+.seccion-derecha ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.seccion-derecha a {
+  text-decoration: none;
+  color: black;
+  font-size: 1rem;
+}
+
+.img-carrito {
+  width: 24px;
+}
