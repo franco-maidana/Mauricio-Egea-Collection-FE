@@ -107,3 +107,177 @@
 .img-carrito {
   width: 24px;
 }
+
+
+/* header Modal */
+
+/* Modal tipo panel lateral */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px; /* ancho fijo */
+  height: 100%; /* ocupa todo el alto */
+  background-color: white;
+  z-index: 1000;
+  padding: 2rem 1.5rem;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Animación desde la izquierda */
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Contenido del panel */
+.modal-contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Links dentro del menú */
+.modal-contenido a {
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: black;
+}
+
+.modal-contenido a:hover {
+  color: gray;
+}
+
+/* Botón cerrar en la esquina superior derecha */
+.boton-cerrar {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/*  dentro del modal  */
+
+.dentro-modal-titulo-cerrar {
+  display: flex;
+  justify-content: space-between; /* uno a cada lado */
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #ddd; /* línea sutil abajo */
+  padding-bottom: 0.5rem;
+}
+
+.titulo-modal-adentro {
+  font-size: 1.5rem;
+  margin: 0;
+  color: #333;
+  font-weight: bold;
+}
+
+.boton-cerrar-modal {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.boton-cerrar-modal:hover {
+  color: #000; /* más oscuro al pasar el mouse */
+}
+
+.menu-lista {
+  list-style: none;
+  padding: 0;
+}
+
+.menu-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-item {
+  position: relative;
+  width: 100%;
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box; /* asegura que el border esté dentro del ancho */
+}
+
+
+.menu-item:hover {
+  background-color: #f5f5f5;
+}
+
+.submenu-categorias {
+  display: none; /* oculto por defecto */
+  position: absolute;
+  top: 0;
+  left: 100%;
+  background-color: white;
+  border-left: 1px solid #ddd;
+  padding: 1rem;
+  min-width: 200px;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.15);
+}
+
+.menu-item:hover .submenu-categorias {
+  display: block; /* solo aparece cuando el mouse está en el li */
+}
+
+.btn-categoria {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.btn-categoria:hover {
+  background-color: #f0f0f0;
+}
+
+/* Contenedor del submenú */
+.submenu-categorias {
+  list-style: none; /* sin viñetas */
+  padding: 0;
+  margin: 5px 0 0 0;
+  background-color: #fff; /* fondo blanco */
+  border: 1px solid #ddd; /* borde suave */
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* sombra */
+  display: none; /* oculto por defecto */
+  position: absolute; /* flotante */
+  z-index: 10;
+}
+
+/* Cada elemento del submenú */
+.submenu-categorias li {
+  padding: 8px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap; /* que no se corte el texto */
+}
+
+/* Hover en cada categoría */
+.submenu-categorias li:hover {
+  background-color: #f0f0f0;
+}
+
+/* Mostrar el submenú cuando se pasa el mouse por Productos */
+.menu-item:hover .submenu-categorias {
+  display: block;
+}
