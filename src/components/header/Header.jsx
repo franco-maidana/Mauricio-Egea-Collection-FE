@@ -9,7 +9,7 @@ const Header = () => {
   const [categorias, setCategorias] = useState([]);
 
   useEffect(() => {
-    const endpoint = `${Global.url}categorias/list`;
+    const endpoint = `${Global.url}categorias/list`;  // -------- RUTA
 
     fetch(endpoint, {
       method: "GET",
@@ -77,12 +77,20 @@ const Header = () => {
                 <ul className="submenu-categorias">
                   {/* Todos los productos */}
                   <li key="all-products" className="all-products">
-                    <Link to="/productos">Ver Todos</Link>
+                    <Link 
+                      to="/productos" 
+                      onClick={() => setModalAbierto(false)}
+                    >
+                      Ver Todos
+                    </Link>
                   </li>
                   {/* Categorías dinámicas */}
                   {categorias.map((cat) => (
                     <li key={cat.categoria_id}>
-                      <Link to={`/productos/categoria/${cat.categoria_id}`}>
+                      <Link 
+                        to={`/productos/categoria/${cat.categoria_id}`} 
+                        onClick={() => setModalAbierto(false)}
+                      >
                         {cat.nombre}
                       </Link>
                     </li>

@@ -1,0 +1,100 @@
+/* ===== Home / Productos (B/N limpio) ===== */
+.home-wrap { padding: 24px 16px; max-width: 1200px; margin: 0 auto; }
+
+/* Grid */
+.products-grid {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+/* Card */
+.card {
+  border: 1px solid #eaeaea;
+  border-radius: 14px;
+  background: #fff;
+  transition: transform .08s ease, box-shadow .12s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.06); }
+
+.card-link { color: inherit; text-decoration: none; display: block; }
+
+/* Imagen */
+.card-img {
+  position: relative;
+  aspect-ratio: 2 / 3;
+  background: #f7f7f7;
+  border-bottom: 1px solid #eee;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  overflow: hidden;
+}
+.card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Badge de descuento */
+.img-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #000;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: 0 2px 6px rgba(0,0,0,.2);
+}
+
+/* Cuerpo */
+.card-body { padding: 10px 12px 14px; }
+
+/* Título */
+.card-title {
+  margin: 0 0 6px;
+  font-size: 15px;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Precios */
+.price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.price-old { color: #777; text-decoration: line-through; font-size: 14px; }
+.price-now { color: #111; font-weight: 800; font-size: 16px; }
+
+/* Meta */
+.meta-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.pill {
+  border: 1px solid #e5e5e5; border-radius: 9999px; padding: 4px 8px;
+  font-size: 12px; color: #333; background: #fff;
+}
+.pill.outline { background: #fff; border-style: dashed; }
+
+/* Responsivo */
+@media (max-width: 1200px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 900px)  { .products-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px)  { .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
+@media (max-width: 380px)  { .products-grid { grid-template-columns: 1fr; } }
+
+@media (max-width: 480px) {
+  .card-title { -webkit-line-clamp: 3; line-clamp: 3; }
+}
