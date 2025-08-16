@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Productos from "./pages/Productos";
-import Header from './components/header/Header'
+import Header from './components/header/Header';
 
 function App() {
   return (
@@ -9,6 +9,7 @@ function App() {
       <Routes>
         <Route path="/productos" element={<Productos />} />
         <Route path="/productos/categoria/:id_categoria" element={<Productos />} />
+        <Route path="/productos/:tipo" element={<Productos />} /> {/* 👈 nueva */}
       </Routes>
     </>
   );  

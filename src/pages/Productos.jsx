@@ -6,15 +6,21 @@ import "./Productos.css";
 const money = new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" });
 
 export default function Productos() {
-  const { id_categoria } = useParams();
+  const { id_categoria, tipo } = useParams(); // 👈 ahora también puede venir "tipo"
   const [productos, setProductos] = useState([]);
 
   useEffect(() => {
     async function fetchProductos() {
       try {
-        let url = id_categoria
-          ? `${Global.url}productos/categoria/${id_categoria}`
-          : `${Global.url}productos/list`;
+        let url;
+
+        if (tipo === "descuentos") {
+          url = `${Global.url}productos/descuentos`; // 👈 nuevo endpoint
+        } else if (id_categoria) {
+          url = `${Global.url}productos/categoria/${id_categoria}`;
+        } else {
+          url = `${Global.url}productos/list`;
+        }
 
         const res = await fetch(url);
         const data = await res.json();
@@ -29,7 +35,7 @@ export default function Productos() {
     }
 
     fetchProductos();
-  }, [id_categoria]);
+  }, [id_categoria, tipo]);
 
   return (
     <div className="home-wrap">
@@ -45,7 +51,9 @@ export default function Productos() {
             const precioBase = Number(p.precio_base ?? 0);
             const precioFinal = Number(p.precio_final ?? precioBase);
             const tieneDesc = precioBase > 0 && precioFinal < precioBase;
-            const pct = tieneDesc ? Math.round((1 - precioFinal / precioBase) * 100) : p.descuento || 0;
+            const pct = tieneDesc
+              ? Math.round((1 - precioFinal / precioBase) * 100)
+              : p.descuento || 0;
 
             return (
               <li key={id} className="card">

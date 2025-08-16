@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // ✅ quitamos "data"
+import { Link } from "react-router-dom";
 import "./css/Header.css";
 import Global from "../../helpers/Global";
 
@@ -7,58 +7,86 @@ const Header = () => {
   const [buscarActivo, setBuscarActivo] = useState(false);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [categorias, setCategorias] = useState([]);
+  const [scrollActivo, setScrollActivo] = useState(false);
 
   useEffect(() => {
-    const endpoint = `${Global.url}categorias/list`;  // -------- RUTA
-
+    const endpoint = `${Global.url}categorias/list`;
     fetch(endpoint, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
+      headers: { "Content-Type": "application/json" }
     })
-      .then((res) => {
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => {
-        
         if (data && data.data) {
           setCategorias(data.data);
-        } else {
-          console.warn("⚠ La respuesta no tiene el formato esperado");
         }
       })
-      .catch((err) => {
-        console.error("❌ Error al obtener categorías:", err);
-      });
+      .catch((err) => console.error("❌ Error al obtener categorías:", err));
+  }, []);
+
+  // 👇 detectamos el scroll
+  useEffect(() => {
+    const manejarScroll = () => {
+      if (window.scrollY > 50) {
+        setScrollActivo(true);
+      } else {
+        setScrollActivo(false);
+      }
+    };
+
+    window.addEventListener("scroll", manejarScroll);
+    return () => window.removeEventListener("scroll", manejarScroll);
   }, []);
 
   return (
     <>
-      <header className="header-container">
+      <header className={`header-container ${scrollActivo ? "scroll-activo" : ""}`}>
         {/* Sección izquierda */}
         <div className="menu-principal">
-          <img className="menu-hamburguesa" src="/MenuHamburguesa.svg" alt="Menú" onClick={() => setModalAbierto(true)} />
+          <img
+            className="menu-hamburguesa"
+            src="/MenuHamburguesa.svg"
+            alt="Menú"
+            onClick={() => setModalAbierto(true)}
+          />
           <p className="titulo-menu-principal">Menu</p>
-          {/* Seccion izquierda buscador */}
           <div className="buscador">
-            <img className="img-buscador" src="/search.png" alt="Buscar" onClick={() => setBuscarActivo(!buscarActivo)}/>
-            <input type="text" placeholder="Que producto estas buscando" className={`input-busqueda ${buscarActivo ? "activo" : ""}`} />
+            <img
+              className="img-buscador"
+              src="/search.png"
+              alt="Buscar"
+              onClick={() => setBuscarActivo(!buscarActivo)}
+            />
+            <input
+              type="text"
+              placeholder="Que producto estas buscando"
+              className={`input-busqueda ${buscarActivo ? "activo" : ""}`}
+            />
           </div>
         </div>
 
         {/* Centro */}
         <div className="logo-principal">
           <Link to="/">
-            <img className="Logo" src="/LogoTienda.png" alt="Logo tienda" />
+            <img
+              className="Logo"
+              src={scrollActivo ? "/LogosinME.png" : "/LogoTienda.png"}
+              alt="Logo tienda"
+            />
           </Link>
         </div>
 
         {/* Derecha */}
         <div className="seccion-derecha">
           <ul>
-            <li> <Link to="/login">Iniciar sesión</Link> </li>
-            <li> <Link to="/carrito"> <img className="img-carrito" src="/shoppingCart.png" alt="Carrito" /> </Link> </li>
+            <li>
+              <Link to="/login">Iniciar sesión</Link>
+            </li>
+            <li>
+              <Link to="/carrito">
+                <img className="img-carrito" src="/shoppingCart.png" alt="Carrito" />
+              </Link>
+            </li>
           </ul>
         </div>
       </header>
@@ -69,26 +97,23 @@ const Header = () => {
           <div className="modal-contenido" onClick={(e) => e.stopPropagation()}>
             <div className="dentro-modal-titulo-cerrar">
               <h2 className="titulo-modal-adentro">Menú</h2>
-              <button className="boton-cerrar-modal" onClick={() => setModalAbierto(false)} > X </button>
+              <button className="boton-cerrar-modal" onClick={() => setModalAbierto(false)}>
+                X
+              </button>
             </div>
-            <ul className="menu-lista"> 
+            <ul className="menu-lista">
               <li className="menu-item">
                 Productos
                 <ul className="submenu-categorias">
-                  {/* Todos los productos */}
                   <li key="all-products" className="all-products">
-                    <Link 
-                      to="/productos" 
-                      onClick={() => setModalAbierto(false)}
-                    >
+                    <Link to="/productos" onClick={() => setModalAbierto(false)}>
                       Ver Todos
                     </Link>
                   </li>
-                  {/* Categorías dinámicas */}
                   {categorias.map((cat) => (
                     <li key={cat.categoria_id}>
-                      <Link 
-                        to={`/productos/categoria/${cat.categoria_id}`} 
+                      <Link
+                        to={`/productos/categoria/${cat.categoria_id}`}
                         onClick={() => setModalAbierto(false)}
                       >
                         {cat.nombre}
@@ -96,6 +121,16 @@ const Header = () => {
                     </li>
                   ))}
                 </ul>
+              </li>
+
+              {/* 🔥 Nuevo link a descuentos */}
+              <li className="menu-item">
+                <Link
+                  to="/productos/descuentos"
+                  onClick={() => setModalAbierto(false)}
+                >
+                  Descuentos
+                </Link>
               </li>
             </ul>
           </div>
