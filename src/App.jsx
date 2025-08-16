@@ -7,9 +7,13 @@ function App() {
     <>
       <Header />
       <Routes>
+        {/* 🔹 Home apuntando a Productos */}
+        <Route path="/" element={<Productos />} />
+
         <Route path="/productos" element={<Productos />} />
         <Route path="/productos/categoria/:id_categoria" element={<Productos />} />
-        <Route path="/productos/:tipo" element={<Productos />} /> {/* 👈 nueva */}
+        <Route path="/productos/buscar/:termino" element={<Productos />} /> {/* 👈 buscador */}
+        <Route path="/productos/:tipo" element={<Productos />} /> {/* 👈 descuentos */}
       </Routes>
     </>
   );  

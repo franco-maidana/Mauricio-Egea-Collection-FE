@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // 👈 agregado useNavigate
 import "./css/Header.css";
 import Global from "../../helpers/Global";
 
@@ -8,6 +8,8 @@ const Header = () => {
   const [modalAbierto, setModalAbierto] = useState(false);
   const [categorias, setCategorias] = useState([]);
   const [scrollActivo, setScrollActivo] = useState(false);
+  const [termino, setTermino] = useState(""); // 👈 estado para input
+  const navigate = useNavigate(); // 👈 para redirigir
 
   useEffect(() => {
     const endpoint = `${Global.url}categorias/list`;
@@ -38,6 +40,14 @@ const Header = () => {
     return () => window.removeEventListener("scroll", manejarScroll);
   }, []);
 
+  const manejarBusqueda = (e) => {
+    if (e.key === "Enter" && termino.trim() !== "") {
+      navigate(`/productos/buscar/${termino}`); // 👈 lo mandamos a la ruta
+      setBuscarActivo(false);
+      setTermino("");
+    }
+  };
+
   return (
     <>
       <header className={`header-container ${scrollActivo ? "scroll-activo" : ""}`}>
@@ -50,6 +60,8 @@ const Header = () => {
             onClick={() => setModalAbierto(true)}
           />
           <p className="titulo-menu-principal">Menu</p>
+
+          {/* 🔎 Buscador */}
           <div className="buscador">
             <img
               className="img-buscador"
@@ -59,8 +71,11 @@ const Header = () => {
             />
             <input
               type="text"
-              placeholder="Que producto estas buscando"
+              placeholder="¿Qué producto estás buscando?"
               className={`input-busqueda ${buscarActivo ? "activo" : ""}`}
+              value={termino}
+              onChange={(e) => setTermino(e.target.value)}
+              onKeyDown={manejarBusqueda} // 👈 captura Enter
             />
           </div>
         </div>

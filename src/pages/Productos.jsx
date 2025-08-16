@@ -6,7 +6,7 @@ import "./Productos.css";
 const money = new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" });
 
 export default function Productos() {
-  const { id_categoria, tipo } = useParams(); // 👈 ahora también puede venir "tipo"
+  const { id_categoria, tipo, termino } = useParams(); // 👈 agregamos "termino"
   const [productos, setProductos] = useState([]);
 
   useEffect(() => {
@@ -15,9 +15,11 @@ export default function Productos() {
         let url;
 
         if (tipo === "descuentos") {
-          url = `${Global.url}productos/descuentos`; // 👈 nuevo endpoint
+          url = `${Global.url}productos/descuentos`;
         } else if (id_categoria) {
           url = `${Global.url}productos/categoria/${id_categoria}`;
+        } else if (termino) { 
+          url = `${Global.url}productos/buscar/${termino}`; // 👈 nuevo endpoint buscador
         } else {
           url = `${Global.url}productos/list`;
         }
@@ -35,7 +37,7 @@ export default function Productos() {
     }
 
     fetchProductos();
-  }, [id_categoria, tipo]);
+  }, [id_categoria, tipo, termino]); // 👈 también dependemos de "termino"
 
   return (
     <div className="home-wrap">
