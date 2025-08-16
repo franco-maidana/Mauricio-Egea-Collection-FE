@@ -1,17 +1,28 @@
 /* =========================
    Principal
 ========================= */
+body {
+  margin: 0;
+  padding-top: 80px; /* ✅ misma altura del header */
+}
+
+
 .header-container {
-  background-color: transparent; /* Sin color de fondo */
+  background-color: transparent; /* ✅ poné fondo sólido para que no se mezcle con el contenido */
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: 0 2rem;
-  height: 80px;
-  position: relative;
-  z-index: 10; /* Para que esté por encima del contenido */
+  height: 100px;
+  position: fixed; /* ✅ hace que quede fijo */
+  top: 0;          /* ✅ pegado arriba */
+  left: 0;
+  right: 0;
+  z-index: 100;    /* ✅ más alto que el resto del contenido */
+  /* box-shadow: 0 2px 6px rgba(0,0,0,0.08); opcional: sombra para diferenciarlo */
 }
+
 
 /* =========================
    Izquierdo
