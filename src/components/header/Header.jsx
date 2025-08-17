@@ -95,11 +95,14 @@ const Header = () => {
         <div className="seccion-derecha">
           <ul>
             <li>
+              <Link to='/configuracion'><img className="img-settings" src="/settings.png" alt="Configuracion" title="Configuracion" /></Link>
+            </li>
+            <li>
               <Link to="/login">Iniciar sesión</Link>
             </li>
             <li>
               <Link to="/carrito">
-                <img className="img-carrito" src="/shoppingCart.png" alt="Carrito" />
+                <img className="img-carrito" src="/shoppingCart.png" alt="Carrito" title="Carrito" />
               </Link>
             </li>
           </ul>

@@ -115,10 +115,15 @@ body {
   font-size: 1rem;
 }
 
-.img-carrito {
+.img-carrito,
+.img-settings {
   width: 24px;
 }
 
+.img-carrito:hover,
+.img-settings:hover{
+  width: 30px;
+}
 
 /* header Modal */
 
