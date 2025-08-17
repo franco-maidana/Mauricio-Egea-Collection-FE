@@ -125,6 +125,21 @@ body {
   width: 30px;
 }
 
+.header-user {
+  margin-left: 0.5rem;
+  font-weight: 500;
+}
+
+.btn-logout {
+  margin-left: 0.5rem;
+  background: transparent;
+  border: none;
+  /* padding: 4px 8px; */
+  cursor: pointer;
+  font-size: 14px;
+}
+
+
 /* header Modal */
 
 /* Modal tipo panel lateral */

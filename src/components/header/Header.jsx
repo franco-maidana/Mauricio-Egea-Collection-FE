@@ -1,21 +1,25 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom"; // 👈 agregado useNavigate
+import { Link, useNavigate } from "react-router-dom";
 import "./css/Header.css";
 import Global from "../../helpers/Global";
+import { UseAuth } from "../../context/AuthContext";
 
 const Header = () => {
   const [buscarActivo, setBuscarActivo] = useState(false);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [categorias, setCategorias] = useState([]);
   const [scrollActivo, setScrollActivo] = useState(false);
-  const [termino, setTermino] = useState(""); // 👈 estado para input
-  const navigate = useNavigate(); // 👈 para redirigir
+  const [termino, setTermino] = useState("");
+  const [mostrarSaludo, setMostrarSaludo] = useState(false);
 
+  const navigate = useNavigate();
+  const { user, logout } = UseAuth();
+  
   useEffect(() => {
     const endpoint = `${Global.url}categorias/list`;
     fetch(endpoint, {
       method: "GET",
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())
       .then((data) => {
@@ -42,10 +46,27 @@ const Header = () => {
 
   const manejarBusqueda = (e) => {
     if (e.key === "Enter" && termino.trim() !== "") {
-      navigate(`/productos/buscar/${termino}`); // 👈 lo mandamos a la ruta
+      navigate(`/productos/buscar/${termino}`);
       setBuscarActivo(false);
       setTermino("");
     }
+  };
+
+  // 👇 saludo que dura 3 segundos
+  useEffect(() => {
+    if (user) {
+      setMostrarSaludo(true);
+      const timer = setTimeout(() => {
+        setMostrarSaludo(false);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [user]);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
   };
 
   return (
@@ -75,7 +96,7 @@ const Header = () => {
               className={`input-busqueda ${buscarActivo ? "activo" : ""}`}
               value={termino}
               onChange={(e) => setTermino(e.target.value)}
-              onKeyDown={manejarBusqueda} // 👈 captura Enter
+              onKeyDown={manejarBusqueda}
             />
           </div>
         </div>
@@ -94,15 +115,44 @@ const Header = () => {
         {/* Derecha */}
         <div className="seccion-derecha">
           <ul>
-            <li>
-              <Link to='/configuracion'><img className="img-settings" src="/settings.png" alt="Configuracion" title="Configuracion" /></Link>
+            {
+              user && user.role === 'admin' && (
+                <li>
+              <Link to="/configuracion">
+                <img
+                  className="img-settings"
+                  src="/settings.png"
+                  alt="Configuracion"
+                  title="Configuracion"
+                />
+              </Link>
             </li>
+              )
+            }
             <li>
-              <Link to="/login">Iniciar sesión</Link>
+              {user ? (
+                <>
+                  {/* 👇 aparece solo 3 segundos */}
+                  {mostrarSaludo && (
+                    <span className="header-user">Hola, {user.name}</span>
+                  )}
+                  <button className="btn-logout" onClick={handleLogout}>
+                    Cerrar sesión
+                  </button>
+                </>
+              ) : (
+                <Link to="/login">Iniciar sesión</Link>
+              )}
             </li>
+
             <li>
               <Link to="/carrito">
-                <img className="img-carrito" src="/shoppingCart.png" alt="Carrito" title="Carrito" />
+                <img
+                  className="img-carrito"
+                  src="/shoppingCart.png"
+                  alt="Carrito"
+                  title="Carrito"
+                />
               </Link>
             </li>
           </ul>
@@ -115,7 +165,10 @@ const Header = () => {
           <div className="modal-contenido" onClick={(e) => e.stopPropagation()}>
             <div className="dentro-modal-titulo-cerrar">
               <h2 className="titulo-modal-adentro">Menú</h2>
-              <button className="boton-cerrar-modal" onClick={() => setModalAbierto(false)}>
+              <button
+                className="boton-cerrar-modal"
+                onClick={() => setModalAbierto(false)}
+              >
                 X
               </button>
             </div>
@@ -141,7 +194,6 @@ const Header = () => {
                 </ul>
               </li>
 
-              {/* 🔥 Nuevo link a descuentos */}
               <li className="menu-item">
                 <Link
                   to="/productos/descuentos"
