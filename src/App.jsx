@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Productos from "./pages/Productos";
 import Header from './components/header/Header';
 import Login from "./components/login/Login";
+import Register from "./components/registroUsuario/Register";
 
 function App() {
   return (
@@ -16,8 +17,11 @@ function App() {
         <Route path="/productos/buscar/:termino" element={<Productos />} /> {/* 👈 buscador */}
         <Route path="/productos/:tipo" element={<Productos />} /> {/* 👈 descuentos */}
 
-        {/* 🔹 Nueva ruta de login */}
+        {/* 🔹 Login */}
         <Route path="/login" element={<Login />} />
+
+        {/* 🔹 Registro */}
+        <Route path="/registro" element={<Register />} />  {/* 👈 agregado */}
       </Routes>
     </>
   );  
