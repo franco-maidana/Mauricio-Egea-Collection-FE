@@ -101,6 +101,20 @@
   text-align: center;
 }
 
+/* Card deshabilitada */
+.sin-stock-card {
+  opacity: 0.5;               /* opaca la card */
+  pointer-events: none;       /* evita clic en el link */
+  filter: grayscale(20%);     /* un toque grisáceo */
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+/* Podés darle un hover para aclarar si querés */
+.sin-stock-card:hover {
+  opacity: 0.7;
+  filter: grayscale(0%);
+}
+
 
 /* Responsivo */
 @media (max-width: 1200px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }

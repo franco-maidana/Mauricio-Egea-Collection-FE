@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 import Global from "../helpers/Global";
 import "./Productos.css";
 
-const money = new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" });
+const money = new Intl.NumberFormat("es-AR", {
+  style: "currency",
+  currency: "ARS",
+});
 
 export default function Productos() {
   const { id_categoria, tipo, termino } = useParams();
@@ -26,7 +29,9 @@ export default function Productos() {
         // 1️⃣ Traer productos
         const resProd = await fetch(url);
         const dataProd = await resProd.json();
-        const lista = dataProd.ok ? (dataProd.data?.productos || dataProd.data) : [];
+        const lista = dataProd.ok
+          ? dataProd.data?.productos || dataProd.data
+          : [];
 
         // 2️⃣ Traer stock
         const resStock = await fetch(`${Global.url}stock/list`);
@@ -35,7 +40,9 @@ export default function Productos() {
 
         // 3️⃣ Unir productos con su stock
         const listaConStock = lista.map((p) => {
-          const stockProducto = stockList.filter((s) => s.id_producto === p.id_producto);
+          const stockProducto = stockList.filter(
+            (s) => s.id_producto === p.id_producto
+          );
           return { ...p, stock: stockProducto };
         });
 
@@ -67,10 +74,16 @@ export default function Productos() {
               : p.descuento || 0;
 
             // calcular stock total
-            const totalStock = p.stock?.reduce((acc, s) => acc + (s.stock || 0), 0);
+            const totalStock = p.stock?.reduce(
+              (acc, s) => acc + (s.stock || 0),
+              0
+            );
 
             return (
-              <li key={id} className="card">
+              <li
+                key={id}
+                className={`card ${totalStock === 0 ? "sin-stock-card" : ""}`}
+              >
                 <Link to={`/producto/${id}`} className="card-link">
                   <div className="card-img">
                     <img src={img} alt={nombre} loading="lazy" />
@@ -82,12 +95,16 @@ export default function Productos() {
 
                     <div className="price-row">
                       {tieneDesc && (
-                        <span className="price-old">{money.format(precioBase)}</span>
+                        <span className="price-old">
+                          {money.format(precioBase)}
+                        </span>
                       )}
-                      <span className="price-now">{money.format(precioFinal)}</span>
+                      <span className="price-now">
+                        {money.format(precioFinal)}
+                      </span>
                     </div>
 
-                    {/* 🔹 Aviso de sin stock estilizado */}
+                    {/* 🔹 Aviso de sin stock */}
                     {totalStock === 0 && (
                       <div className="stock-info sin-stock">
                         <span>Sin stock</span>
