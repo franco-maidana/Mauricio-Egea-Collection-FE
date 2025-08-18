@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom"; // 👈 solo agregamos Link
+import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Global from "../helpers/Global";
 import "./Productos.css";
@@ -10,10 +10,9 @@ export default function Productos() {
   const [productos, setProductos] = useState([]);
 
   useEffect(() => {
-    async function fetchProductos() {
+    async function fetchData() {
       try {
         let url;
-
         if (tipo === "descuentos") {
           url = `${Global.url}productos/descuentos`;
         } else if (id_categoria) {
@@ -24,19 +23,29 @@ export default function Productos() {
           url = `${Global.url}productos/list`;
         }
 
-        const res = await fetch(url);
-        const data = await res.json();
+        // 1️⃣ Traer productos
+        const resProd = await fetch(url);
+        const dataProd = await resProd.json();
+        const lista = dataProd.ok ? (dataProd.data?.productos || dataProd.data) : [];
 
-        if (data.ok) {
-          const lista = data.data?.productos || data.data;
-          setProductos(lista);
-        }
+        // 2️⃣ Traer stock
+        const resStock = await fetch(`${Global.url}stock/list`);
+        const dataStock = await resStock.json();
+        const stockList = dataStock.ok ? dataStock.data : [];
+
+        // 3️⃣ Unir productos con su stock
+        const listaConStock = lista.map((p) => {
+          const stockProducto = stockList.filter((s) => s.id_producto === p.id_producto);
+          return { ...p, stock: stockProducto };
+        });
+
+        setProductos(listaConStock);
       } catch (error) {
-        console.error("❌ Error cargando productos:", error);
+        console.error("❌ Error cargando productos + stock:", error);
       }
     }
 
-    fetchProductos();
+    fetchData();
   }, [id_categoria, tipo, termino]);
 
   return (
@@ -57,9 +66,11 @@ export default function Productos() {
               ? Math.round((1 - precioFinal / precioBase) * 100)
               : p.descuento || 0;
 
+            // calcular stock total
+            const totalStock = p.stock?.reduce((acc, s) => acc + (s.stock || 0), 0);
+
             return (
               <li key={id} className="card">
-                {/* 👇 agregado: Link al detalle */}
                 <Link to={`/producto/${id}`} className="card-link">
                   <div className="card-img">
                     <img src={img} alt={nombre} loading="lazy" />
@@ -75,6 +86,13 @@ export default function Productos() {
                       )}
                       <span className="price-now">{money.format(precioFinal)}</span>
                     </div>
+
+                    {/* 🔹 Aviso de sin stock estilizado */}
+                    {totalStock === 0 && (
+                      <div className="stock-info sin-stock">
+                        <span>Sin stock</span>
+                      </div>
+                    )}
                   </div>
                 </Link>
               </li>

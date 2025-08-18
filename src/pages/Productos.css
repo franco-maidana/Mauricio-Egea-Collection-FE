@@ -89,6 +89,19 @@
 }
 .pill.outline { background: #fff; border-style: dashed; }
 
+.sin-stock {
+  margin-top: 8px;
+  padding: 4px 8px;
+  display: inline-block;
+  background-color: #f8d7da;  /* rojo suave */
+  color: #842029;             /* rojo fuerte */
+  font-size: 0.9rem;
+  font-weight: bold;
+  border-radius: 6px;
+  text-align: center;
+}
+
+
 /* Responsivo */
 @media (max-width: 1200px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 900px)  { .products-grid { grid-template-columns: repeat(2, 1fr); } }
