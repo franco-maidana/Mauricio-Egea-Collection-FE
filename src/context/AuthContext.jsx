@@ -15,7 +15,6 @@ export function AuthProvider({ children }) {
           credentials: "include", // 👈 para enviar cookies al backend
         });
         const data = await res.json();
-        console.log("Respuesta /auth/me:", data); // 👀 debug
 
         if (res.ok && data.ok) {
           setUser(data.user); // ✅ el backend devuelve { user: { ... } }

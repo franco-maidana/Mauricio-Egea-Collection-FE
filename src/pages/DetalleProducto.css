@@ -1,0 +1,108 @@
+.detalle-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Imagen | Info */
+  gap: 40px; 
+  align-items: flex-start;
+  max-width: 1000px;
+  margin: 60px auto;
+  padding: 20px;
+}
+
+.detalle-img {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.detalle-img img {
+  width: 80%;              /* 👈 más chico */
+  max-width: 350px;        /* 👈 tope más reducido */
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.detalle-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.detalle-header {
+  margin-bottom: 30px;
+}
+
+.detalle-header h2 {
+  font-size: 26px;  /* 👈 un poco más chico */
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.detalle-header p {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.4;
+}
+
+.detalle-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.detalle-form label {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.form-input,
+.detalle-form select,
+.detalle-form input {
+  padding: 8px 5px;
+  border: none;
+  border-bottom: 1px solid #000;
+  outline: none;
+  font-size: 15px;
+  background: transparent;
+}
+
+.btn-black {
+  background: black;
+  color: white;
+  padding: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+  text-transform: uppercase;
+  transition: background 0.2s ease-in-out;
+}
+
+.btn-black:hover {
+  background: #333;
+}
+
+.precios {
+  margin-top: 10px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.precio-base {
+  font-size: 18px;
+  color: #888;
+  text-decoration: line-through;
+}
+
+.precio-final {
+  font-size: 22px;
+  font-weight: bold;
+  color: #000;
+}
+
+.descuento {
+  font-size: 16px;
+  font-weight: bold;
+  color: #d90f74; /* color llamativo */
+}
