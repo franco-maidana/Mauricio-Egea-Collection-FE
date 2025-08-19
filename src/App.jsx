@@ -5,6 +5,7 @@ import Login from "./components/login/Login";
 import Register from "./components/registroUsuario/Register";
 import ProductoDetalle from "./pages/ProductosDetalle";
 import Carrito from "./pages/Carrito";
+import Direcciones from "./pages/Direcciones";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/productos/:tipo" element={<Productos />} /> {/* 👈 descuentos */}
         <Route path="/producto/:id" element={<ProductoDetalle />} />
         <Route path="/carrito" element={<Carrito />} />
+        <Route path="/direcciones-envio" element={<Direcciones />} />
         {/* 🔹 Login */}
         <Route path="/login" element={<Login />} />
 

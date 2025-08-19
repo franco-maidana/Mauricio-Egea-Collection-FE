@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate} from 'react-router-dom'
 import { UseAuth } from "../context/AuthContext";
 import Global from "../helpers/Global";
 import "./Carrito.css";
@@ -9,6 +10,8 @@ const Carrito = () => {
   const [subtotal, setSubtotal] = useState(0);
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("loading");
+
+  const navigate = useNavigate()
 
   // 🔹 Cargar carrito al montar
   useEffect(() => {
@@ -139,6 +142,10 @@ const Carrito = () => {
   if (status === "error") return <p>❌ Error al cargar el carrito.</p>;
   if (!carrito.length) return <p>🛒 Tu carrito está vacío.</p>;
 
+  const handleIniciarCompra = () => {
+    navigate('/direcciones-envio')
+  }
+
   return (
     <div className="carrito-page">
       <h2>🛒 Resumen de Compra ({carrito.length} productos)</h2>
@@ -201,7 +208,7 @@ const Carrito = () => {
   </div>
 
   <div className="acciones-carrito">
-  <button className="btn-comprar">Iniciar Compra</button>
+  <button className="btn-comprar" onClick={handleIniciarCompra}>Iniciar Compra</button>
   <button className="btn-vaciar" onClick={handleVaciarCarrito}>
     Vaciar carrito
   </button>
