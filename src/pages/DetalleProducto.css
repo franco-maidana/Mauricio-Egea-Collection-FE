@@ -106,3 +106,29 @@
   font-weight: bold;
   color: #d90f74; /* color llamativo */
 }
+
+.mensaje {
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.mensaje.ok {
+  background-color: #d1e7dd;
+  color: #0f5132;
+  border: 1px solid #badbcc;
+}
+
+.mensaje.error {
+  background-color: #f8d7da;
+  color: #842029;
+  border: 1px solid #f5c2c7;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}

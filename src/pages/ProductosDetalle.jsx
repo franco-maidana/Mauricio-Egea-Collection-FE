@@ -1,10 +1,12 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { UseAuth } from "../context/AuthContext"; // 👈 importa tu contexto
 import Global from "../helpers/Global";
 import "./DetalleProducto.css";
 
 export default function ProductoDetalle() {
   const { id } = useParams();
+  const { user } = UseAuth(); // 👈 obtenés el usuario logueado del contexto
 
   const [producto, setProducto] = useState(null);
   const [stock, setStock] = useState([]);
@@ -15,6 +17,11 @@ export default function ProductoDetalle() {
   const [colorId, setColorId] = useState("");
   const [cantidad, setCantidad] = useState(1);
 
+  // Estados de mensaje elegante
+  const [mensaje, setMensaje] = useState("");
+  const [tipoMensaje, setTipoMensaje] = useState(""); // "ok" | "error"
+
+  // 🔹 Cargar producto y stock
   useEffect(() => {
     const fetchProducto = async () => {
       try {
@@ -67,20 +74,27 @@ export default function ProductoDetalle() {
     (s) => s.talle_id == talleId && s.color_id == colorId
   );
 
-  // Enviar al backend
+  // 🔹 Agregar al carrito
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!talleId || !colorId) {
-      alert("Selecciona talle y color antes de agregar al carrito");
+      setMensaje("⚠️ Selecciona talle y color antes de agregar al carrito");
+      setTipoMensaje("error");
+      return;
+    }
+
+    if (!user) {
+      setMensaje("⚠️ Debes iniciar sesión para agregar productos al carrito");
+      setTipoMensaje("error");
       return;
     }
 
     try {
-      const request = await fetch(`${Global.url}carrito/add`, {
+      const request = await fetch(`${Global.url}carrito/agregar/${user.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", // 👈 si usás sesiones/cookies
+        credentials: "include", // 👈 si usás cookies para sesión
         body: JSON.stringify({
           producto_id: id,
           talle_id: talleId,
@@ -91,12 +105,16 @@ export default function ProductoDetalle() {
 
       const data = await request.json();
       if (data.ok) {
-        alert("✅ Producto agregado al carrito");
+        setMensaje("✅ Producto agregado al carrito");
+        setTipoMensaje("ok");
       } else {
-        alert("❌ No se pudo agregar al carrito");
+        setMensaje("❌ No se pudo agregar al carrito");
+        setTipoMensaje("error");
       }
     } catch (error) {
       console.error("Error al agregar al carrito:", error);
+      setMensaje("❌ Error al conectar con el servidor");
+      setTipoMensaje("error");
     }
   };
 
@@ -107,7 +125,7 @@ export default function ProductoDetalle() {
       (v, i, arr) => arr.findIndex((x) => x.talle_id === v.talle_id) === i
     );
 
-  // 🔹 Colores disponibles según talle seleccionado
+  // 🔹 Colores según talle seleccionado
   const coloresFiltrados = stock
     .filter((s) => s.talle_id == talleId)
     .map((s) => ({ color_id: s.color_id, color: s.color }))
@@ -127,7 +145,7 @@ export default function ProductoDetalle() {
           <h2>{producto.nombre}</h2>
           <p>
             {producto.descripcion ||
-              "Aca podemos Agregar una breve descripcion del producto a vender,"}
+              "Aca podemos agregar una breve descripción del producto a vender."}
           </p>
 
           {/* Precios */}
@@ -149,7 +167,7 @@ export default function ProductoDetalle() {
           </div>
         </div>
 
-        {/* Formulario abajo */}
+        {/* Formulario */}
         <form onSubmit={handleSubmit} className="detalle-form">
           {/* Selector de talle */}
           <label>TALLE</label>
@@ -199,9 +217,16 @@ export default function ProductoDetalle() {
             className="form-input"
           />
 
-          <button type="submit" className="btn-black">
-            AGREGAR AL CARRITO
+          <button type="submit" className="btn-black" disabled={!user}>
+            {user ? "AGREGAR AL CARRITO" : "INICIA SESIÓN PARA COMPRAR"}
           </button>
+
+          {/* 🔹 Mensaje elegante */}
+          {mensaje && (
+            <div className={`mensaje ${tipoMensaje}`}>
+              {mensaje}
+            </div>
+          )}
         </form>
       </div>
     </div>

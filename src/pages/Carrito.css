@@ -1,0 +1,135 @@
+.carrito-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: "Arial", sans-serif;
+  color: #111;
+  background: #fff;
+}
+
+.carrito-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 40px 0; /* espacio debajo de productos */
+}
+
+.carrito-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.carrito-img {
+  width: 120px;
+  height: auto;
+  object-fit: cover;
+  border: 1px solid #eee;
+}
+
+.carrito-info {
+  flex: 1;
+}
+
+.carrito-info h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.carrito-cantidad-precio {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.input-cantidad {
+  width: 50px;
+  padding: 4px;
+  text-align: center;
+  border: 1px solid #111;
+  background: transparent;
+}
+
+.btn-remove {
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.btn-remove:hover {
+  color: #111;
+}
+
+/* 🔹 Resumen ahora ocupa todo el ancho */
+.carrito-resumen.ancho {
+  border: 1px solid #111;
+  padding: 20px;
+  margin-top: 20px;
+  width: 100%; 
+}
+
+.carrito-resumen h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.resumen-linea {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.resumen-linea.total {
+  font-weight: bold;
+  font-size: 16px;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+  margin-top: 15px;
+}
+
+
+
+
+
+.acciones-carrito {
+  display: flex;
+  gap: 15px;        /* espacio entre botones */
+  margin-top: 15px;
+}
+
+.btn-comprar {
+  flex: 1;
+  background: black;
+  color: white;
+  padding: 12px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.btn-comprar:hover {
+  background: #333;
+}
+
+.btn-vaciar {
+  flex: 1;
+  background: white;
+  color: black;
+  border: 2px solid black;
+  padding: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+

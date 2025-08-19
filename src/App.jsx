@@ -4,6 +4,7 @@ import Header from './components/header/Header';
 import Login from "./components/login/Login";
 import Register from "./components/registroUsuario/Register";
 import ProductoDetalle from "./pages/ProductosDetalle";
+import Carrito from "./pages/Carrito";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
         <Route path="/productos/buscar/:termino" element={<Productos />} /> {/* 👈 buscador */}
         <Route path="/productos/:tipo" element={<Productos />} /> {/* 👈 descuentos */}
         <Route path="/producto/:id" element={<ProductoDetalle />} />
-
+        <Route path="/carrito" element={<Carrito />} />
         {/* 🔹 Login */}
         <Route path="/login" element={<Login />} />
 
