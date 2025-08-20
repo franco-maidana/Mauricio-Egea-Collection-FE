@@ -6,6 +6,9 @@ import Register from "./components/registroUsuario/Register";
 import ProductoDetalle from "./pages/ProductosDetalle";
 import Carrito from "./pages/Carrito";
 import Direcciones from "./pages/Direcciones";
+import NuevaDireccion from "./pages/NuevaDireccion";
+import EditarDireccion from "./pages/EditarDireccion";
+import Checkout from "./pages/Checkout";
 
 function App() {
   return (
@@ -21,12 +24,21 @@ function App() {
         <Route path="/productos/:tipo" element={<Productos />} /> {/* 👈 descuentos */}
         <Route path="/producto/:id" element={<ProductoDetalle />} />
         <Route path="/carrito" element={<Carrito />} />
+
+        {/* 🔹 Direcciones */}
         <Route path="/direcciones-envio" element={<Direcciones />} />
+        <Route path="/checkout/direcciones" element={<Direcciones />} /> {/* 👈 alias corregido */}
+        <Route path="/checkout/nueva-direccion" element={<NuevaDireccion />} />
+        <Route path="/datos/editar-direccion/:id" element={<EditarDireccion />} />
+
+        {/* 🔹 Checkout */}
+        <Route path="/checkout/resumen" element={<Checkout />} />
+
         {/* 🔹 Login */}
         <Route path="/login" element={<Login />} />
 
         {/* 🔹 Registro */}
-        <Route path="/registro" element={<Register />} />  {/* 👈 agregado */}
+        <Route path="/registro" element={<Register />} />  
       </Routes>
     </>
   );  

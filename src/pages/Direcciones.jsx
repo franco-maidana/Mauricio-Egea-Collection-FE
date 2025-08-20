@@ -4,10 +4,12 @@ import "./Direcciones.css";
 
 const Direcciones = () => {
   const [direcciones, setDirecciones] = useState([]);
+  const [provincias, setProvincias] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
+  console.log(direcciones)
   useEffect(() => {
+    // Traemos las direcciones del usuario
     fetch("http://localhost:8080/api/direccion-envio/usuario/mias", {
       credentials: "include",
     })
@@ -19,9 +21,27 @@ const Direcciones = () => {
         setLoading(false);
       })
       .catch(() => setLoading(false));
+
+    // Traemos las provincias
+    fetch("http://localhost:8080/api/provincias/listar")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok) {
+          setProvincias(data.data);
+        }
+      })
+      .catch((err) => console.error("Error cargando provincias:", err));
   }, []);
 
   if (loading) return <p>Cargando direcciones...</p>;
+
+  // 🔹 Función para obtener nombre y costo de la provincia por ID
+  const getProvinciaInfo = (id) => {
+    const provincia = provincias.find((p) => p.id === id);
+    return provincia
+      ? `${provincia.nombre}`
+      : `ID: ${id}`;
+  };
 
   return (
     <div className="direcciones-container">
@@ -32,17 +52,19 @@ const Direcciones = () => {
           {direcciones.map((d) => (
             <div key={d.id} className="direccion-card">
               <div className="direccion-header">
-                <h3>
-                  {d.calle} {d.numero}
-                </h3>
+                <p><strong>Calle:</strong> {d.calle}</p>
+                <p><strong>Número:</strong> {d.numero}</p>  
+
                 {d.es_predeterminada ? (
                   <span className="badge">Predeterminada</span>
                 ) : null}
               </div>
 
+              <p><strong>Calle 1:</strong> {d.entre_calle_1 || "—"}</p>
+              <p><strong>Calle 2:</strong> {d.entre_calle_2 || "—"}</p>
               <p><strong>Barrio:</strong> {d.barrio || "—"}</p>
               <p><strong>Ciudad:</strong> {d.ciudad}</p>
-              <p><strong>Provincia ID:</strong> {d.provincia_id}</p>
+              <p><strong>Provincia:</strong> {getProvinciaInfo(d.provincia_id)}</p>
               <p><strong>CP:</strong> {d.cp || "—"}</p>
               <p><strong>Teléfono:</strong> {d.telefono || "—"}</p>
               <p><strong>Referencia:</strong> {d.referencia || "—"}</p>
@@ -64,7 +86,7 @@ const Direcciones = () => {
                 </button>
                 <button
                   className="btn-secundario"
-                  onClick={() => navigate(`/checkout/editar-direccion/${d.id}`)}
+                  onClick={() => navigate(`/datos/editar-direccion/${d.id}`)}
                 >
                   Editar
                 </button>

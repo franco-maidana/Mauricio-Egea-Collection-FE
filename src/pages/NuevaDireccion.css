@@ -1,0 +1,98 @@
+.form-container {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 2px solid #000;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.form-container h2 {
+  font-family: "Times New Roman", serif;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.form-elegante {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 🔹 2 columnas */
+  gap: 20px 30px;                /* 🔹 espacio filas y columnas */
+}
+
+.form-elegante label {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.form-elegante input,
+.form-elegante textarea {
+  border: none;
+  border-bottom: 1px solid #000;
+  outline: none;
+  background: transparent;
+}
+
+.form-elegante textarea {
+  grid-column: span 2; /* 🔹 ocupa las 2 columnas */
+  min-height: 70px;
+  resize: none;
+}
+
+.acciones {
+  grid-column: span 2; /* 🔹 botones centrados en toda la fila */
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-primario {
+  flex: 1;
+  margin-right: 10px;
+  background: #000;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primario:hover {
+  background: #fff;
+  color: #000;
+  border: 1px solid #000;
+}
+
+.btn-secundario {
+  flex: 1;
+  margin-left: 10px;
+  background: transparent;
+  color: #000;
+  font-weight: bold;
+  border: 2px solid #000;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secundario:hover {
+  background: #000;
+  color: #fff;
+}
+
+.form-elegante select {
+  border: none;
+  border-bottom: 1px solid #000;
+  outline: none;
+  padding: 8px 4px;
+  font-size: 14px;
+  background: transparent;
+  cursor: pointer;
+}
+

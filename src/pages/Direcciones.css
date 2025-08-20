@@ -25,12 +25,12 @@
   transition: all 0.2s ease;
 }
 
-.direccion-card:hover {
-  background: #000;             /* 🔹 hover invertido */
-  color: #fff;                  /* 🔹 texto blanco */
-}
+/* .direccion-card:hover {
+  background: #000;             
+  color: #fff;                  
+} */
 
-.direccion-card:hover .btn-primario {
+/* .direccion-card:hover .btn-primario {
   background: #fff;
   color: #000;
   border: 2px solid #fff;
@@ -40,7 +40,7 @@
   background: transparent;
   border: 2px solid #fff;
   color: #fff;
-}
+} */
 
 .direccion-header {
   margin-bottom: 15px;
