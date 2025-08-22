@@ -148,7 +148,7 @@ const Carrito = () => {
 
   return (
     <div className="carrito-page">
-      <h2>🛒 Resumen de Compra ({carrito.length} productos)</h2>
+      <h2 className="h2">🛒 Resumen de Compra ({carrito.length} productos)</h2>
 
       {/* Lista de productos */}
       <ul className="carrito-lista">

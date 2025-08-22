@@ -132,3 +132,55 @@
   from { opacity: 0; transform: translateY(5px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+@media (max-width: 480px) {
+  .detalle-container {
+    grid-template-columns: 1fr; /* 👈 de dos columnas pasa a una */
+    gap: 20px;
+    margin: 20px auto;
+    padding: 15px;
+  }
+
+  .detalle-img img {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .detalle-header h2 {
+    font-size: 22px; /* más chico para mobile */
+    text-align: center;
+  }
+
+  .detalle-header p {
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .precios {
+    justify-content: center; /* centra precios en mobile */
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .detalle-form {
+    gap: 12px;
+  }
+
+  .form-input,
+  .detalle-form select,
+  .detalle-form input {
+    font-size: 14px;
+  }
+
+  .btn-black {
+    width: 100%; /* botón ocupa todo el ancho */
+    font-size: 14px;
+  }
+
+  .mensaje {
+    font-size: 14px;
+    padding: 8px;
+  }
+}

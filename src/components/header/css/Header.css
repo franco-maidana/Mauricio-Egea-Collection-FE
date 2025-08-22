@@ -6,23 +6,20 @@ body {
   padding-top: 80px; /* ✅ misma altura del header */
 }
 
-
 .header-container {
-  background-color: transparent; /* ✅ poné fondo sólido para que no se mezcle con el contenido */
+  background-color: transparent; 
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: 0 2rem;
   height: 100px;
-  position: fixed; /* ✅ hace que quede fijo */
-  top: 0;          /* ✅ pegado arriba */
+  position: fixed;
+  top: 0;          
   left: 0;
   right: 0;
-  z-index: 100;    /* ✅ más alto que el resto del contenido */
-  /* box-shadow: 0 2px 6px rgba(0,0,0,0.08); opcional: sombra para diferenciarlo */
+  z-index: 100;    
 }
-
 
 /* =========================
    Izquierdo
@@ -43,6 +40,45 @@ body {
   font-size: 1rem;
 }
 
+/* =========================
+   Centro → logo + buscador
+========================= */
+.logo-buscador {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-buscador.activo {
+  transform: translateX(-30%); /* desplaza todo cuando buscador está activo */
+}
+
+/* Logo centrado siempre */
+/* Logo centrado por defecto */
+.logo-principal {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease; /* transición suave */
+}
+
+.Logo {
+  max-height: 100px;
+  margin-top: 20px;
+}
+
+/* Cuando buscador está activo → logo se corre a la derecha */
+.header-container.buscar-activo .logo-principal {
+  transform: translateX(120%); /* ajustá el % según cuánto espacio quieras que se mueva */
+}
+
+/* Buscador */
 .buscador {
   display: flex;
   align-items: center;
@@ -55,40 +91,21 @@ body {
   cursor: pointer;
 }
 
-/* Input escondido por defecto */
 .input-busqueda {
   width: 0;
   opacity: 0;
   transition: width 0.4s ease, opacity 0.3s ease;
   border: none;
-  border-bottom: 1px solid #000; /* Solo borde inferior */
+  border-bottom: 1px solid #000;
   outline: none;
   font-size: 0.9rem;
   background: transparent;
 }
 
-/* Cuando está activo, se expande */
 .input-busqueda.activo {
-  width: 200px;
+  width: 180px;   /* se expande hacia la derecha */
   opacity: 1;
   padding: 0 0.3rem;
-}
-
-/* =========================
-   Centro
-========================= */
-.logo-principal {
-  position: absolute; /* Saca el logo del flujo */
-  left: 50%;
-  transform: translateX(-50%); /* Centra horizontalmente */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.Logo {
-  max-height: 100px;
-  margin-top: 20px;
 }
 
 /* =========================
@@ -121,7 +138,7 @@ body {
 }
 
 .img-carrito:hover,
-.img-settings:hover{
+.img-settings:hover {
   width: 30px;
 }
 
@@ -134,21 +151,19 @@ body {
   margin-left: 0.5rem;
   background: transparent;
   border: none;
-  /* padding: 4px 8px; */
   cursor: pointer;
   font-size: 14px;
 }
 
-
-/* header Modal */
-
-/* Modal tipo panel lateral */
+/* =========================
+   Modal
+========================= */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 250px; /* ancho fijo */
-  height: 100%; /* ocupa todo el alto */
+  width: 250px; 
+  height: 100%; 
   background-color: white;
   z-index: 1000;
   padding: 2rem 1.5rem;
@@ -156,7 +171,6 @@ body {
   animation: slideIn 0.3s ease-out;
 }
 
-/* Animación desde la izquierda */
 @keyframes slideIn {
   from {
     transform: translateX(-100%);
@@ -166,14 +180,12 @@ body {
   }
 }
 
-/* Contenido del panel */
 .modal-contenido {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  height: 90%;
 }
 
-/* Links dentro del menú */
 .modal-contenido a {
   font-size: 1.2rem;
   text-decoration: none;
@@ -184,7 +196,6 @@ body {
   color: gray;
 }
 
-/* Botón cerrar en la esquina superior derecha */
 .boton-cerrar {
   position: absolute;
   top: 1rem;
@@ -195,14 +206,12 @@ body {
   cursor: pointer;
 }
 
-/*  dentro del modal  */
-
 .dentro-modal-titulo-cerrar {
   display: flex;
-  justify-content: space-between; /* uno a cada lado */
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
-  border-bottom: 1px solid #ddd; /* línea sutil abajo */
+  border-bottom: 1px solid #ddd;
   padding-bottom: 0.5rem;
 }
 
@@ -224,12 +233,7 @@ body {
 }
 
 .boton-cerrar-modal:hover {
-  color: #000; /* más oscuro al pasar el mouse */
-}
-
-.menu-lista {
-  list-style: none;
-  padding: 0;
+  color: #000;
 }
 
 .menu-lista {
@@ -238,21 +242,36 @@ body {
   margin: 0;
 }
 
+.menu-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1; 
+}
+
 .menu-item {
   position: relative;
   width: 100%;
   padding: 1rem;
   border-bottom: 1px solid #ddd;
-  box-sizing: border-box; /* asegura que el border esté dentro del ancho */
+  box-sizing: border-box; 
 }
-
 
 .menu-item:hover {
   background-color: #f5f5f5;
 }
 
+.menu-bottom {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid #ddd;
+  padding-top: 1rem;
+  display: none;
+}
+
 .submenu-categorias {
-  display: none; /* oculto por defecto */
+  display: none; 
   position: absolute;
   top: 0;
   left: 100%;
@@ -264,7 +283,7 @@ body {
 }
 
 .menu-item:hover .submenu-categorias {
-  display: block; /* solo aparece cuando el mouse está en el li */
+  display: block; 
 }
 
 .btn-categoria {
@@ -281,34 +300,58 @@ body {
   background-color: #f0f0f0;
 }
 
-/* Contenedor del submenú */
 .submenu-categorias {
-  list-style: none; /* sin viñetas */
+  list-style: none; 
   padding: 0;
   margin: 5px 0 0 0;
-  background-color: #fff; /* fondo blanco */
-  border: 1px solid #ddd; /* borde suave */
+  background-color: #fff;
+  border: 1px solid #ddd; 
   border-radius: 4px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* sombra */
-  display: none; /* oculto por defecto */
-  position: absolute; /* flotante */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); 
+  display: none;
+  position: absolute;
   z-index: 10;
 }
 
-/* Cada elemento del submenú */
 .submenu-categorias li {
   padding: 8px 15px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  white-space: nowrap; /* que no se corte el texto */
+  white-space: nowrap; 
 }
 
-/* Hover en cada categoría */
 .submenu-categorias li:hover {
   background-color: #f0f0f0;
 }
 
-/* Mostrar el submenú cuando se pasa el mouse por Productos */
 .menu-item:hover .submenu-categorias {
   display: block;
+}
+
+/* =========================
+Mobile
+========================= */
+@media (max-width: 480px) {
+  .logo-principal {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .seccion-derecha {
+    display: none;
+  }
+
+  .titulo-menu-principal {
+    display: none;
+  }
+
+  .Logo {
+    max-height: 80px;
+    margin-top: 10px;
+  }
+
+  .menu-bottom{
+    display: block;
+  }
 }

@@ -1,0 +1,120 @@
+.form-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #fff;
+}
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 22px;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== GRID PRINCIPAL ===== */
+.form-elegante {
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* dos columnas */
+  gap: 20px;
+}
+
+/* ===== LABELS + INPUTS ===== */
+.form-elegante label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  font-weight: bold;
+  color: #111;
+}
+
+.form-elegante input,
+.form-elegante select,
+.form-elegante textarea {
+  margin-top: 6px;
+  padding: 10px;
+  border: none;
+  border-bottom: 2px solid #000;
+  outline: none;
+  font-size: 14px;
+  background: transparent;
+}
+
+.form-elegante textarea {
+  resize: none;
+  min-height: 60px;
+}
+
+/* ===== BOTONES ===== */
+.acciones {
+  grid-column: span 2; /* ocupa todo el ancho */
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  gap: 15px;
+}
+
+.btn-primario,
+.btn-secundario {
+  flex: 1;
+  padding: 14px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-primario {
+  background: black;
+  color: white;
+  border: 2px solid black;
+}
+
+.btn-primario:hover {
+  background: #333;
+}
+
+.btn-secundario {
+  background: white;
+  color: black;
+  border: 2px solid black;
+}
+
+.btn-secundario:hover {
+  background: black;
+  color: white;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+  .form-container{
+    width: 90%;
+  }
+
+  .form-elegante {
+    display: flex;   
+    flex-direction: column;
+    justify-content: center;
+    width: 90%;
+  }
+
+  .acciones {
+    flex-direction: row; /* ✅ botones en columna */
+    gap: 10px;
+  }
+
+  .btn-primario,
+  .btn-secundario {
+    width: 100%;
+    font-size: 13px;
+    padding: 12px;
+  }
+
+  .form-container h2 {
+    font-size: 18px; /* un poco más chico en móvil */
+  }
+}

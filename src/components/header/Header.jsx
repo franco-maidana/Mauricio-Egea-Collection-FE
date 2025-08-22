@@ -71,37 +71,39 @@ const Header = () => {
 
   return (
     <>
-      <header className={`header-container ${scrollActivo ? "scroll-activo" : ""}`}>
+      <header className={`header-container ${scrollActivo ? "scroll-activo" : ""} ${buscarActivo ? "buscar-activo" : ""}`}>
+
         {/* Sección izquierda */}
-        <div className="menu-principal">
+        {/* Sección izquierda */}
+      <div className="menu-principal">
+        <img
+          className="menu-hamburguesa"
+          src="/MenuHamburguesa.svg"
+          alt="Menú"
+          onClick={() => setModalAbierto(true)}
+        />
+        <p className="titulo-menu-principal">Menu</p>
+
+        {/* 🔎 Buscador */}
+        <div className="buscador">
           <img
-            className="menu-hamburguesa"
-            src="/MenuHamburguesa.svg"
-            alt="Menú"
-            onClick={() => setModalAbierto(true)}
+            className="img-buscador"
+            src="/search.png"
+            alt="Buscar"
+            onClick={() => setBuscarActivo(!buscarActivo)}
           />
-          <p className="titulo-menu-principal">Menu</p>
-
-          {/* 🔎 Buscador */}
-          <div className="buscador">
-            <img
-              className="img-buscador"
-              src="/search.png"
-              alt="Buscar"
-              onClick={() => setBuscarActivo(!buscarActivo)}
-            />
-            <input
-              type="text"
-              placeholder="¿Qué producto estás buscando?"
-              className={`input-busqueda ${buscarActivo ? "activo" : ""}`}
-              value={termino}
-              onChange={(e) => setTermino(e.target.value)}
-              onKeyDown={manejarBusqueda}
-            />
-          </div>
+          <input
+            type="text"
+            placeholder="¿Qué producto estás buscando?"
+            className={`input-busqueda ${buscarActivo ? "activo" : ""}`}
+            value={termino}
+            onChange={(e) => setTermino(e.target.value)}
+            onKeyDown={manejarBusqueda}
+          />
         </div>
+      </div>
 
-        {/* Centro */}
+        {/* Centro → SOLO logo */}
         <div className="logo-principal">
           <Link to="/">
             <img
@@ -112,23 +114,22 @@ const Header = () => {
           </Link>
         </div>
 
+
         {/* Derecha */}
         <div className="seccion-derecha">
           <ul>
-            {
-              user && user.role === 'admin' && (
-                <li>
-              <Link to="/configuracion">
-                <img
-                  className="img-settings"
-                  src="/settings.png"
-                  alt="Configuracion"
-                  title="Configuracion"
-                />
-              </Link>
-            </li>
-              )
-            }
+            {user && user.role === "admin" && (
+              <li>
+                <Link to="/configuracion">
+                  <img
+                    className="img-settings"
+                    src="/settings.png"
+                    alt="Configuracion"
+                    title="Configuracion"
+                  />
+                </Link>
+              </li>
+            )}
             <li>
               {user ? (
                 <>
@@ -172,37 +173,72 @@ const Header = () => {
                 X
               </button>
             </div>
-            <ul className="menu-lista">
-              <li className="menu-item">
-                Productos
-                <ul className="submenu-categorias">
-                  <li key="all-products" className="all-products">
-                    <Link to="/productos" onClick={() => setModalAbierto(false)}>
-                      Ver Todos
-                    </Link>
-                  </li>
-                  {categorias.map((cat) => (
-                    <li key={cat.categoria_id}>
-                      <Link
-                        to={`/productos/categoria/${cat.categoria_id}`}
-                        onClick={() => setModalAbierto(false)}
-                      >
-                        {cat.nombre}
+
+            {/* Contenedor general con flex */}
+            <div className="menu-wrapper">
+              <ul className="menu-lista">
+                <li className="menu-item">
+                  Productos
+                  <ul className="submenu-categorias">
+                    <li key="all-products" className="all-products">
+                      <Link to="/productos" onClick={() => setModalAbierto(false)}>
+                        Ver Todos
                       </Link>
                     </li>
-                  ))}
-                </ul>
-              </li>
+                    {categorias.map((cat) => (
+                      <li key={cat.categoria_id}>
+                        <Link
+                          to={`/productos/categoria/${cat.categoria_id}`}
+                          onClick={() => setModalAbierto(false)}
+                        >
+                          {cat.nombre}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
 
-              <li className="menu-item">
-                <Link
-                  to="/productos/descuentos"
-                  onClick={() => setModalAbierto(false)}
-                >
-                  Descuentos
-                </Link>
-              </li>
-            </ul>
+                <li className="menu-item">
+                  <Link
+                    to="/productos/descuentos"
+                    onClick={() => setModalAbierto(false)}
+                  >
+                    Descuentos
+                  </Link>
+                </li>
+              </ul>
+
+              {/* 🔽 parte fija abajo */}
+              <ul className="menu-bottom">
+                <li className="menu-item">
+                  <Link to="/carrito" onClick={() => setModalAbierto(false)}>
+                    <img
+                      className="img-carrito"
+                      src="/shoppingCart.png"
+                      alt="Carrito"
+                      title="Carrito"
+                    />
+                    Carrito de Compras
+                  </Link>
+                </li>
+                <li className="menu-item">
+                  {user ? (
+                    <>
+                      {mostrarSaludo && (
+                        <span className="header-user">Hola, {user.name}</span>
+                      )}
+                      <button className="btn-logout" onClick={handleLogout}>
+                        Cerrar sesión
+                      </button>
+                    </>
+                  ) : (
+                    <Link to="/login" onClick={() => setModalAbierto(false)}>
+                      Iniciar sesión
+                    </Link>
+                  )}
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       )}

@@ -101,3 +101,48 @@
   background: #000;
   color: #fff;
 }
+
+@media (max-width: 480px) {
+  .direcciones-container {
+    /* padding: 20px; */
+  }
+
+  .direcciones-container h2 {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .direcciones-grid {
+    flex-direction: column;
+    /* gap: 20px; */
+    align-items: center;
+  }
+
+  .direccion-card {
+    width: 90%;     
+    /* padding: 15px; */
+    /* font-size: 13px;       ✅ texto más chico */
+  }
+
+  .direccion-card p {
+    margin: 6px 0;
+    font-size: 13px;
+    line-height: 1.3;
+  }
+
+  .direccion-header p {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .acciones {
+    flex-direction: row; 
+    gap: 10px;
+  }
+
+
+  .badge {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+}

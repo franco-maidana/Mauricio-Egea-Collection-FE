@@ -133,3 +133,73 @@
   text-transform: uppercase;
 }
 
+/* =========================
+   Mobile (hasta 480px)
+========================= */
+@media (max-width: 480px) {
+
+  .h2{
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .carrito-page {
+    padding: 20px 10px;
+  }
+
+  .carrito-item {
+    flex-direction: column;  /* 👈 imagen arriba, info abajo */
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .carrito-img {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .carrito-info h3 {
+    font-size: 13px;
+  }
+
+  .carrito-cantidad-precio {
+    font-size: 13px;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .input-cantidad {
+    width: 60px;
+  }
+
+  .btn-remove {
+    align-self: flex-end; /* botón borrar se queda a la derecha */
+    font-size: 20px;
+    margin-top: -10px;
+  }
+
+  .carrito-resumen.ancho {
+    max-width: 93% ;
+    padding: 15px;
+    font-size: 14px;
+  }
+
+  .carrito-resumen h2 {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .acciones-carrito {
+    flex-direction: column; /* botones apilados */
+    gap: 10px;
+  }
+
+  .btn-comprar,
+  .btn-vaciar {
+    width: 100%; /* ocupan todo el ancho */
+    font-size: 14px;
+    padding: 10px;
+  }
+}
