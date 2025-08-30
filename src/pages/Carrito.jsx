@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UseAuth } from "../context/AuthContext";
+import { UseCarrito } from "../context/CarritoContext"; // 👈 importamos contexto
 import Global from "../helpers/Global";
 import "./Carrito.css";
 
 const Carrito = () => {
   const { user } = UseAuth();
+  const { setCarritoCount } = UseCarrito(); // 👈 función global para actualizar el contador
+
   const [carrito, setCarrito] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
   const [total, setTotal] = useState(0);
@@ -32,11 +35,15 @@ const Carrito = () => {
           setSubtotal(data.subtotal || 0);
           setTotal(data.total || 0);
           setStatus("success");
+
+          // 👇 Actualizamos contador global
+          setCarritoCount(data.carrito?.length || 0);
         } else {
           setCarrito([]);
           setSubtotal(0);
           setTotal(0);
           setStatus("empty");
+          setCarritoCount(0); // 👈 también lo ponemos en 0 si no hay nada
         }
       } catch (error) {
         console.error("❌ Error obteniendo carrito:", error);
@@ -45,7 +52,7 @@ const Carrito = () => {
     };
 
     fetchCarrito();
-  }, [user]);
+  }, [user, setCarritoCount]);
 
   // 🔹 Actualizar cantidad de un producto
   const handleCantidadChange = async (
@@ -70,7 +77,6 @@ const Carrito = () => {
       });
 
       if (res.ok) {
-        // 🔄 Recargar carrito desde backend para tener subtotal y total correctos
         const updated = await fetch(`${Global.url}carrito/list/${user.id}`, {
           credentials: "include",
         });
@@ -79,6 +85,9 @@ const Carrito = () => {
           setCarrito(data.carrito);
           setSubtotal(data.subtotal);
           setTotal(data.total);
+
+          // 👇 actualizamos el contador global
+          setCarritoCount(data.carrito?.length || 0);
         }
       } else {
         console.error("❌ Error actualizando cantidad:", await res.json());
@@ -97,7 +106,6 @@ const Carrito = () => {
       );
 
       if (res.ok) {
-        // 🔄 Recargar carrito para actualizar totales
         const updated = await fetch(`${Global.url}carrito/list/${user.id}`, {
           credentials: "include",
         });
@@ -106,6 +114,9 @@ const Carrito = () => {
           setCarrito(data.carrito);
           setSubtotal(data.subtotal);
           setTotal(data.total);
+
+          // 👇 actualizamos el contador global
+          setCarritoCount(data.carrito?.length || 0);
         }
       } else {
         console.error("❌ Error eliminando producto:", await res.json());
@@ -127,6 +138,7 @@ const Carrito = () => {
         setCarrito([]);
         setSubtotal(0);
         setTotal(0);
+        setCarritoCount(0); // 👈 dejamos el contador en 0
       } else {
         console.error("❌ Error vaciando carrito:", await res.json());
       }
@@ -140,7 +152,8 @@ const Carrito = () => {
   if (status === "no-user")
     return <p>⚠️ Debes iniciar sesión para ver tu carrito.</p>;
   if (status === "error") return <p>❌ Error al cargar el carrito.</p>;
-  if (!carrito.length) return <p>🛒 Tu carrito está vacío.</p>;
+  if (!carrito.length)
+    return <p className="carrito-mensaje-vacio"> 🛒 Tu carrito está vacío.</p>;
 
   const handleIniciarCompra = () => {
     navigate("/direcciones-envio");

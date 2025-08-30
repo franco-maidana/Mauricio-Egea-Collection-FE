@@ -3,11 +3,14 @@ import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext.jsx'
+import {CarritoProvider} from './context/CarritoContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <AuthProvider>        {/* 👈 envolvemos la app */}
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <CarritoProvider >
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </CarritoProvider>
   </AuthProvider>
 )

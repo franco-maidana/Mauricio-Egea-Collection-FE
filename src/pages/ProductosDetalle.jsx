@@ -1,12 +1,14 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
 import { UseAuth } from "../context/AuthContext";
+import { UseCarrito } from "../context/CarritoContext"; // 👈 importamos contexto
 import Global from "../helpers/Global";
 import "./DetalleProducto.css";
 
 export default function ProductoDetalle() {
   const { id } = useParams();
   const { user } = UseAuth();
+  const { setCarritoCount } = UseCarrito(); // 👈 obtenemos función del contexto
 
   const [producto, setProducto] = useState(null);
   const [stock, setStock] = useState([]);
@@ -127,6 +129,9 @@ export default function ProductoDetalle() {
       if (data.ok) {
         setMensaje("✅ Producto agregado al carrito");
         setTipoMensaje("ok");
+
+        // 👇 actualizamos el contador global del carrito en el header
+        setCarritoCount((prev) => prev + Number(cantidad));
       } else {
         setMensaje("❌ No se pudo agregar al carrito");
         setTipoMensaje("error");

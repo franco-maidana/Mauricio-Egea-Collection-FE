@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./css/Header.css";
 import Global from "../../helpers/Global";
 import { UseAuth } from "../../context/AuthContext";
+import { UseCarrito } from "../../context/CarritoContext"; // 👈 Contexto del carrito
 
 const Header = () => {
   const [buscarActivo, setBuscarActivo] = useState(false);
@@ -12,38 +13,29 @@ const Header = () => {
   const [termino, setTermino] = useState("");
   const [mostrarSaludo, setMostrarSaludo] = useState(false);
 
-  const navigate = useNavigate();
+  const { carritoCount, setCarritoCount } = UseCarrito(); // 👈 ahora usamos el contexto
   const { user, logout } = UseAuth();
-  
+  const navigate = useNavigate();
+
+  // 🔹 Cargar categorías
   useEffect(() => {
     const endpoint = `${Global.url}categorias/list`;
-    fetch(endpoint, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    })
+    fetch(endpoint)
       .then((res) => res.json())
       .then((data) => {
-        if (data && data.data) {
-          setCategorias(data.data);
-        }
+        if (data && data.data) setCategorias(data.data);
       })
       .catch((err) => console.error("❌ Error al obtener categorías:", err));
   }, []);
 
-  // 👇 detectamos el scroll
+  // 🔹 Detectar scroll
   useEffect(() => {
-    const manejarScroll = () => {
-      if (window.scrollY > 50) {
-        setScrollActivo(true);
-      } else {
-        setScrollActivo(false);
-      }
-    };
-
+    const manejarScroll = () => setScrollActivo(window.scrollY > 50);
     window.addEventListener("scroll", manejarScroll);
     return () => window.removeEventListener("scroll", manejarScroll);
   }, []);
 
+  // 🔹 Buscar
   const manejarBusqueda = (e) => {
     if (e.key === "Enter" && termino.trim() !== "") {
       navigate(`/productos/buscar/${termino}`);
@@ -52,14 +44,11 @@ const Header = () => {
     }
   };
 
-  // 👇 saludo que dura 3 segundos
+  // 🔹 Saludo temporal (3s)
   useEffect(() => {
     if (user) {
       setMostrarSaludo(true);
-      const timer = setTimeout(() => {
-        setMostrarSaludo(false);
-      }, 3000);
-
+      const timer = setTimeout(() => setMostrarSaludo(false), 3000);
       return () => clearTimeout(timer);
     }
   }, [user]);
@@ -69,41 +58,68 @@ const Header = () => {
     navigate("/");
   };
 
+  // 🔹 Cargar carrito al inicio
+  useEffect(() => {
+    if (!user) return;
+
+    const fetchCarritoCount = async () => {
+      try {
+        const res = await fetch(`${Global.url}carrito/list/${user.id}`, {
+          credentials: "include",
+        });
+        const data = await res.json();
+
+        if (res.ok && data.ok) {
+          setCarritoCount(data.carrito.length); // ✅ se guarda en el contexto
+        } else {
+          setCarritoCount(0);
+        }
+      } catch (error) {
+        console.error("❌ Error obteniendo carrito:", error);
+        setCarritoCount(0);
+      }
+    };
+
+    fetchCarritoCount();
+  }, [user, setCarritoCount]);
+
   return (
     <>
-      <header className={`header-container ${scrollActivo ? "scroll-activo" : ""} ${buscarActivo ? "buscar-activo" : ""}`}>
-
-        {/* Sección izquierda */}
-        {/* Sección izquierda */}
-      <div className="menu-principal">
-        <img
-          className="menu-hamburguesa"
-          src="/MenuHamburguesa.svg"
-          alt="Menú"
-          onClick={() => setModalAbierto(true)}
-        />
-        <p className="titulo-menu-principal">Menu</p>
-
-        {/* 🔎 Buscador */}
-        <div className="buscador">
+      <header
+        className={`header-container ${scrollActivo ? "scroll-activo" : ""} ${
+          buscarActivo ? "buscar-activo" : ""
+        }`}
+      >
+        {/* 🔹 Izquierda */}
+        <div className="menu-principal">
           <img
-            className="img-buscador"
-            src="/search.png"
-            alt="Buscar"
-            onClick={() => setBuscarActivo(!buscarActivo)}
+            className="menu-hamburguesa"
+            src="/MenuHamburguesa.svg"
+            alt="Menú"
+            onClick={() => setModalAbierto(true)}
           />
-          <input
-            type="text"
-            placeholder="¿Qué producto estás buscando?"
-            className={`input-busqueda ${buscarActivo ? "activo" : ""}`}
-            value={termino}
-            onChange={(e) => setTermino(e.target.value)}
-            onKeyDown={manejarBusqueda}
-          />
-        </div>
-      </div>
+          <p className="titulo-menu-principal">Menu</p>
 
-        {/* Centro → SOLO logo */}
+          {/* 🔎 Buscador */}
+          <div className="buscador">
+            <img
+              className="img-buscador"
+              src="/search.png"
+              alt="Buscar"
+              onClick={() => setBuscarActivo(!buscarActivo)}
+            />
+            <input
+              type="text"
+              placeholder="¿Qué producto estás buscando?"
+              className={`input-busqueda ${buscarActivo ? "activo" : ""}`}
+              value={termino}
+              onChange={(e) => setTermino(e.target.value)}
+              onKeyDown={manejarBusqueda}
+            />
+          </div>
+        </div>
+
+        {/* 🔹 Centro → Logo */}
         <div className="logo-principal">
           <Link to="/">
             <img
@@ -114,8 +130,7 @@ const Header = () => {
           </Link>
         </div>
 
-
-        {/* Derecha */}
+        {/* 🔹 Derecha */}
         <div className="seccion-derecha">
           <ul>
             {user && user.role === "admin" && (
@@ -130,10 +145,10 @@ const Header = () => {
                 </Link>
               </li>
             )}
+
             <li>
               {user ? (
                 <>
-                  {/* 👇 aparece solo 3 segundos */}
                   {mostrarSaludo && (
                     <span className="header-user">Hola, {user.name}</span>
                   )}
@@ -146,7 +161,8 @@ const Header = () => {
               )}
             </li>
 
-            <li>
+            {/* 🛒 Carrito con contador */}
+            <li className="carrito-icono">
               <Link to="/carrito">
                 <img
                   className="img-carrito"
@@ -154,13 +170,16 @@ const Header = () => {
                   alt="Carrito"
                   title="Carrito"
                 />
+                {carritoCount > 0 && (
+                  <span className="contador-carrito">{carritoCount}</span>
+                )}
               </Link>
             </li>
           </ul>
         </div>
       </header>
 
-      {/* Modal */}
+      {/* 🔹 Modal menú */}
       {modalAbierto && (
         <div className="modal-overlay" onClick={() => setModalAbierto(false)}>
           <div className="modal-contenido" onClick={(e) => e.stopPropagation()}>
@@ -174,14 +193,16 @@ const Header = () => {
               </button>
             </div>
 
-            {/* Contenedor general con flex */}
             <div className="menu-wrapper">
               <ul className="menu-lista">
                 <li className="menu-item">
                   Productos
                   <ul className="submenu-categorias">
                     <li key="all-products" className="all-products">
-                      <Link to="/productos" onClick={() => setModalAbierto(false)}>
+                      <Link
+                        to="/productos"
+                        onClick={() => setModalAbierto(false)}
+                      >
                         Ver Todos
                       </Link>
                     </li>
@@ -208,18 +229,21 @@ const Header = () => {
                 </li>
               </ul>
 
-              {/* 🔽 parte fija abajo */}
+              {/* 🔽 Parte fija abajo */}
               <ul className="menu-bottom">
-                <li className="menu-item">
-                  <Link to="/carrito" onClick={() => setModalAbierto(false)}>
+                <li className="carrito-icono">
+                  <Link to="/carrito">
                     <img
                       className="img-carrito"
                       src="/shoppingCart.png"
                       alt="Carrito"
                       title="Carrito"
                     />
-                    Carrito de Compras
+                    {carritoCount > 0 && (
+                      <span className="contador-carrito">{carritoCount}</span>
+                    )}
                   </Link>
+                  Carrito de compras
                 </li>
                 <li className="menu-item">
                   {user ? (

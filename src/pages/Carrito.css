@@ -74,6 +74,12 @@
   width: 100%; 
 }
 
+.carrito-mensaje-vacio{
+  text-align: center;
+  margin-top: 50px;
+  font-size: 17px;
+}
+
 .carrito-resumen h2 {
   font-size: 18px;
   font-weight: bold;
