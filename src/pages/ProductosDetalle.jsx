@@ -1,38 +1,34 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { UseAuth } from "../context/AuthContext"; // 👈 importa tu contexto
+import { useEffect, useState, useMemo } from "react";
+import { UseAuth } from "../context/AuthContext";
 import Global from "../helpers/Global";
 import "./DetalleProducto.css";
 
 export default function ProductoDetalle() {
   const { id } = useParams();
-  const { user } = UseAuth(); // 👈 obtenés el usuario logueado del contexto
+  const { user } = UseAuth();
 
   const [producto, setProducto] = useState(null);
   const [stock, setStock] = useState([]);
   const [status, setStatus] = useState(null);
 
-  // Estados del formulario
+  const [imagenes, setImagenes] = useState([]);
+  const [imagenSeleccionada, setImagenSeleccionada] = useState("");
+
   const [talleId, setTalleId] = useState("");
   const [colorId, setColorId] = useState("");
   const [cantidad, setCantidad] = useState(1);
 
-  // Estados de mensaje elegante
   const [mensaje, setMensaje] = useState("");
-  const [tipoMensaje, setTipoMensaje] = useState(""); // "ok" | "error"
+  const [tipoMensaje, setTipoMensaje] = useState("");
 
-  // 🔹 Cargar producto y stock
+  // 🔹 Cargar producto, stock e imágenes
   useEffect(() => {
     const fetchProducto = async () => {
       try {
         setStatus("loading");
-
-        const request = await fetch(`${Global.url}productos/list/${id}`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
+        const request = await fetch(`${Global.url}productos/list/${id}`);
         const data = await request.json();
-
         if (data.ok) {
           setProducto(data.data);
           setStatus("success");
@@ -47,34 +43,58 @@ export default function ProductoDetalle() {
 
     const fetchStock = async () => {
       try {
-        const request = await fetch(`${Global.url}stock/producto/${id}`, {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
+        const request = await fetch(`${Global.url}stock/producto/${id}`);
         const data = await request.json();
-
-        if (data.ok) {
-          setStock(data.data);
-        }
+        if (data.ok) setStock(data.data);
       } catch (error) {
         console.error("Error cargando stock:", error);
       }
     };
 
+    const fetchImagenes = async () => {
+      try {
+        const request = await fetch(`${Global.url}img-galeria/${id}`);
+        const data = await request.json();
+        if (data.ok) setImagenes(data.data);
+      } catch (error) {
+        console.error("Error cargando imágenes:", error);
+      }
+    };
+
     fetchProducto();
     fetchStock();
+    fetchImagenes();
   }, [id]);
+
+  // 🔹 Filtrar imágenes según color
+  const imagenesFiltradas = useMemo(() => {
+    return colorId ? imagenes.filter((img) => img.color_id == colorId) : imagenes;
+  }, [colorId, imagenes]);
+
+  // 🔹 Siempre incluir la principal como primera
+  const todasLasImagenes = useMemo(() => {
+    const lista = [{ imagen_url: producto?.imagen_url, color_id: null }];
+    if (imagenesFiltradas.length > 0) lista.push(...imagenesFiltradas);
+    return lista;
+  }, [producto?.imagen_url, imagenesFiltradas]);
+
+  // 🔹 Resetear imagen seleccionada cuando cambie color/galería
+  useEffect(() => {
+    if (todasLasImagenes.length > 0) {
+      setImagenSeleccionada(todasLasImagenes[0].imagen_url);
+    }
+  }, [todasLasImagenes]);
 
   if (status === "loading") return <p>Cargando producto...</p>;
   if (status === "error") return <p>No se pudo cargar el producto.</p>;
   if (!producto) return null;
 
-  // Buscar stock del talle+color seleccionado
+  // 🔹 Stock seleccionado
   const stockSeleccionado = stock.find(
     (s) => s.talle_id == talleId && s.color_id == colorId
   );
 
-  // 🔹 Agregar al carrito
+  // 🔹 Enviar al carrito
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -94,7 +114,7 @@ export default function ProductoDetalle() {
       const request = await fetch(`${Global.url}carrito/agregar/${user.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", // 👈 si usás cookies para sesión
+        credentials: "include",
         body: JSON.stringify({
           producto_id: id,
           talle_id: talleId,
@@ -121,26 +141,43 @@ export default function ProductoDetalle() {
   // 🔹 Talles únicos
   const tallesUnicos = stock
     .map((s) => ({ talle_id: s.talle_id, etiqueta: s.etiqueta }))
-    .filter(
-      (v, i, arr) => arr.findIndex((x) => x.talle_id === v.talle_id) === i
-    );
+    .filter((v, i, arr) => arr.findIndex((x) => x.talle_id === v.talle_id) === i);
 
-  // 🔹 Colores según talle seleccionado
+  // 🔹 Colores filtrados según talle
   const coloresFiltrados = stock
     .filter((s) => s.talle_id == talleId)
     .map((s) => ({ color_id: s.color_id, color: s.color }))
-    .filter(
-      (v, i, arr) => arr.findIndex((x) => x.color_id === v.color_id) === i
-    );
+    .filter((v, i, arr) => arr.findIndex((x) => x.color_id === v.color_id) === i);
 
   return (
     <div className="detalle-container">
+      {/* Columna de imágenes */}
       <div className="detalle-img">
-        <img src={producto.imagen_url} alt={producto.nombre} />
+        <div className="galeria">
+          {/* Imagen principal */}
+          <div className="imagen-principal">
+            <img src={imagenSeleccionada} alt={producto.nombre} />
+          </div>
+
+          {/* Miniaturas */}
+          <div className="miniaturas">
+            {todasLasImagenes.map((img, idx) => (
+              <img
+                key={idx}
+                src={img.imagen_url}
+                alt={`${producto.nombre} ${idx + 1}`}
+                className={`miniatura ${
+                  imagenSeleccionada === img.imagen_url ? "activa" : ""
+                }`}
+                onClick={() => setImagenSeleccionada(img.imagen_url)}
+              />
+            ))}
+          </div>
+        </div>
       </div>
 
+      {/* Columna de info */}
       <div className="detalle-info">
-        {/* Info arriba */}
         <div className="detalle-header">
           <h2>{producto.nombre}</h2>
           <p>
@@ -165,17 +202,25 @@ export default function ProductoDetalle() {
             )}
             <span className="precio-final">${producto.precio_final}</span>
           </div>
+
+          {/* 🔹 Cálculo de cuotas */}
+          <div className="promo-cuotas">
+            Hasta 6 cuotas sin interés de $
+            {(producto.precio_final / 6).toLocaleString("es-AR", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </div>
         </div>
 
         {/* Formulario */}
         <form onSubmit={handleSubmit} className="detalle-form">
-          {/* Selector de talle */}
           <label>TALLE</label>
           <select
             value={talleId}
             onChange={(e) => {
               setTalleId(e.target.value);
-              setColorId(""); // reset color
+              setColorId("");
             }}
             required
             className="form-input"
@@ -188,7 +233,6 @@ export default function ProductoDetalle() {
             ))}
           </select>
 
-          {/* Selector de color */}
           <label>COLOR</label>
           <select
             value={colorId}
@@ -205,7 +249,6 @@ export default function ProductoDetalle() {
             ))}
           </select>
 
-          {/* Cantidad */}
           <label>CANTIDAD</label>
           <input
             type="number"
@@ -221,12 +264,7 @@ export default function ProductoDetalle() {
             {user ? "AGREGAR AL CARRITO" : "INICIA SESIÓN PARA COMPRAR"}
           </button>
 
-          {/* 🔹 Mensaje elegante */}
-          {mensaje && (
-            <div className={`mensaje ${tipoMensaje}`}>
-              {mensaje}
-            </div>
-          )}
+          {mensaje && <div className={`mensaje ${tipoMensaje}`}>{mensaje}</div>}
         </form>
       </div>
     </div>

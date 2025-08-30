@@ -115,6 +115,51 @@
   filter: grayscale(0%);
 }
 
+.promo-box {
+  margin-top: 8px;
+  padding: 6px;
+  border-top: 1px dashed #ddd;
+}
+
+.promo-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.promo-logo {
+  width: 28px;
+  height: auto;
+}
+
+.promo-cuotas {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+  color: #333;
+}
+
+.promo-cuota {
+  margin: 0;
+}
+
+.no-promos {
+  font-size: 12px;
+  color: #777;
+  font-style: italic;
+}
+
+.promo-box {
+  margin-top: 5px;
+  font-size: 16px;
+  color: #008290; /* azulito tipo banco */
+  font-weight: 600;
+}
+
+
+
 
 /* Responsivo */
 @media (max-width: 1200px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }

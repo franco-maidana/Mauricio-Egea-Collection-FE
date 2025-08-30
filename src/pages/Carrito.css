@@ -133,6 +133,14 @@
   text-transform: uppercase;
 }
 
+.resumen-cuotas {
+  margin-top: 8px;
+  font-size: 18px;
+  color: #008290; /* mismo tono que usaste en productos */
+  font-weight: 600;
+}
+
+
 /* =========================
    Mobile (hasta 480px)
 ========================= */

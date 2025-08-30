@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import { UseAuth } from "../context/AuthContext";
 import Global from "../helpers/Global";
 import "./Carrito.css";
@@ -11,7 +11,7 @@ const Carrito = () => {
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("loading");
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // 🔹 Cargar carrito al montar
   useEffect(() => {
@@ -143,8 +143,8 @@ const Carrito = () => {
   if (!carrito.length) return <p>🛒 Tu carrito está vacío.</p>;
 
   const handleIniciarCompra = () => {
-    navigate('/direcciones-envio')
-  }
+    navigate("/direcciones-envio");
+  };
 
   return (
     <div className="carrito-page">
@@ -197,25 +197,36 @@ const Carrito = () => {
 
       {/* Resumen al final */}
       <div className="carrito-resumen ancho">
-  <h2>Resumen de compra</h2>
-  <div className="resumen-linea">
-    <span>Subtotal</span>
-    <span>${subtotal.toLocaleString()}</span>
-  </div>
-  <div className="resumen-linea total">
-    <span>TOTAL</span>
-    <span>${total.toLocaleString()}</span>
-  </div>
+        <h2>Resumen de compra</h2>
+        <div className="resumen-linea">
+          <span>Subtotal</span>
+          <span>${subtotal.toLocaleString()}</span>
+        </div>
+        <div className="resumen-linea total">
+          <span>TOTAL</span>
+          <span>${total.toLocaleString()}</span>
+        </div>
 
-  <div className="acciones-carrito">
-  <button className="btn-comprar" onClick={handleIniciarCompra}>Iniciar Compra</button>
-  <button className="btn-vaciar" onClick={handleVaciarCarrito}>
-    Vaciar carrito
-  </button>
-</div>
+        {/* 🔹 Cuotas */}
+        <div className="resumen-cuotas">
+          <small>
+            6 cuotas sin interés de $
+            {(total / 6).toLocaleString("es-AR", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </small>
+        </div>
 
-</div>
-
+        <div className="acciones-carrito">
+          <button className="btn-comprar" onClick={handleIniciarCompra}>
+            Iniciar Compra
+          </button>
+          <button className="btn-vaciar" onClick={handleVaciarCarrito}>
+            Vaciar carrito
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
