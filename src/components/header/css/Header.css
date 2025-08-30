@@ -328,6 +328,23 @@ body {
   display: block;
 }
 
+.carrito-icono {
+  position: relative;
+}
+
+.contador-carrito {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: black;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 6px;
+}
+
+
 /* =========================
 Mobile
 ========================= */
