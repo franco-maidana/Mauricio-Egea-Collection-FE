@@ -23,7 +23,8 @@ export default function Productos() {
         } else if (termino) {
           url = `${Global.url}productos/buscar/${termino}`;
         } else {
-          url = `${Global.url}productos/list`;
+          // 👇 ahora viene con promos
+          url = `${Global.url}productos/list-con-promos`;
         }
 
         // 1️⃣ Traer productos
@@ -102,6 +103,13 @@ export default function Productos() {
                       <span className="price-now">
                         {money.format(precioFinal)}
                       </span>
+                    </div>
+
+                    {/* 🔹 Cálculo de cuotas */}
+                    <div className="promo-box">
+                      <small>
+                        Hasta 6 cuotas sin interés de {money.format(precioFinal / 6)}
+                      </small>
                     </div>
 
                     {/* 🔹 Aviso de sin stock */}

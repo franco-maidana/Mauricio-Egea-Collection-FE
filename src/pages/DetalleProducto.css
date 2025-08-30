@@ -128,6 +128,58 @@
   border: 1px solid #f5c2c7;
 }
 
+.promo-cuotas {
+  margin-top: 8px;
+  font-size: 18px;
+  color: #333;
+  font-weight: 500;
+}
+
+.detalle-img {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.galeria {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* Imagen principal */
+.imagen-principal img {
+  width: 400px;  /* 👈 hacela un poco más ancha */
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+/* Miniaturas */
+.miniaturas {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.miniaturas img {
+  width: 90px;   /* 👈 más ancho que antes */
+  height: 120px; /* proporción vertical */
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s ease, border 0.2s ease;
+}
+
+/* .miniaturas img:hover {
+  transform: scale(1.05);
+} */
+
+.miniaturas img.activa {
+  border: 2px solid black;
+}
+
+
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(5px); }
   to { opacity: 1; transform: translateY(0); }
@@ -135,52 +187,49 @@
 
 @media (max-width: 480px) {
   .detalle-container {
-    grid-template-columns: 1fr; /* 👈 de dos columnas pasa a una */
+    grid-template-columns: 1fr; 
     gap: 20px;
     margin: 20px auto;
     padding: 15px;
   }
 
-  .detalle-img img {
+ .galeria {
     width: 100%;
-    max-width: 300px;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column; /* primero imagen, luego miniaturas */
+    align-items: center;
+    gap: 10px;
+  }
+
+  .imagen-principal img {
+    width: 100%;
+    max-width: 320px;
+    border-radius: 10px;
     display: block;
   }
 
-  .detalle-header h2 {
-    font-size: 22px; /* más chico para mobile */
-    text-align: center;
+  .miniaturas {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; /* 👉 una a la izq y otra a la der */
+    width: 30%;
+    gap: 10px;
   }
 
-  .detalle-header p {
-    text-align: center;
-    font-size: 14px;
+  .miniatura {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+    flex: 1; /* se distribuyen igual en el espacio */
   }
 
-  .precios {
-    justify-content: center; /* centra precios en mobile */
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .detalle-form {
-    gap: 12px;
-  }
-
-  .form-input,
-  .detalle-form select,
-  .detalle-form input {
-    font-size: 14px;
-  }
-
-  .btn-black {
-    width: 100%; /* botón ocupa todo el ancho */
-    font-size: 14px;
-  }
-
-  .mensaje {
-    font-size: 14px;
-    padding: 8px;
+  .miniatura.activa {
+    border: 2px solid #000;
   }
 }
+
