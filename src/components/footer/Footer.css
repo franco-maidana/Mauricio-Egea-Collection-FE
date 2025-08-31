@@ -1,0 +1,132 @@
+.footer {
+  width: 100%;
+  max-width: 100vw; /* nunca más ancho que la ventana */
+  overflow-x: hidden; /* bloquea scroll lateral */
+  margin-top: 3rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #111;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.footer-contenido {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Logo */
+.footer-logo img {
+  width: 160px;
+  margin-bottom: 1rem;
+}
+
+.footer-desc {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #333;
+  max-width: 260px;
+}
+
+/* Títulos */
+.footer-links h4,
+.footer-ayuda h4,
+.footer-redes h4 {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-bottom: 1px solid black;
+  display: inline-block;
+  padding-bottom: 0.3rem;
+  color: #000;
+}
+
+/* Links */
+.footer-links ul,
+.footer-ayuda ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links ul li,
+.footer-ayuda ul li {
+  margin-bottom: 0.6rem;
+}
+
+.footer-links ul li a,
+.footer-ayuda ul li a {
+  color: #222;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-links ul li a:hover,
+.footer-ayuda ul li a:hover {
+  color: black;
+}
+
+/* Redes sociales en columna */
+.footer-redes .redes-iconos {
+  display: flex;
+  flex-direction: column; /* 🔹 uno debajo del otro */
+  gap: 0.8rem;
+  align-items: flex-start;
+}
+
+.footer-redes .redes-iconos a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #222;
+  font-size: 17px;
+  transition: color 0.3s;
+}
+
+.footer-redes .redes-iconos a:hover {
+  color: #d90f74;
+}
+
+.footer-redes .redes-iconos img {
+  width: 30px;
+  margin-right: 8px; /* espacio entre ícono y texto */
+  /* filter: grayscale(100%); */
+  transition: all 0.3s;
+}
+
+.footer-redes .redes-iconos img:hover {
+  transform: scale(1.1);
+  filter: grayscale(0%);
+}
+
+/* Línea inferior */
+.footer-bottom {
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: 2rem;
+  padding-top: 1rem;
+  font-size: 17px;
+  color: #444;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-contenido {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .footer-logo img {
+    margin: 0 auto 1rem;
+  }
+
+  .footer-desc {
+    margin: 0 auto;
+  }
+
+  .footer-redes .redes-iconos {
+    align-items: center; /* centrado en mobile */
+  }
+}

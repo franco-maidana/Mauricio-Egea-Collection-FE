@@ -9,6 +9,7 @@ import Direcciones from "./pages/Direcciones";
 import NuevaDireccion from "./pages/NuevaDireccion";
 import EditarDireccion from "./pages/EditarDireccion";
 import Checkout from "./pages/Checkout";
+import Footer from "./components/footer/Footer";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
         {/* 🔹 Registro */}
         <Route path="/registro" element={<Register />} />  
       </Routes>
+      <Footer/>
     </>
   );  
 }
