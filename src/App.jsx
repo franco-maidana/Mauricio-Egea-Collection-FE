@@ -10,6 +10,9 @@ import NuevaDireccion from "./pages/NuevaDireccion";
 import EditarDireccion from "./pages/EditarDireccion";
 import Checkout from "./pages/Checkout";
 import Footer from "./components/footer/Footer";
+import AdminPanel from "./components/PanelAdmin/AdminPanel";
+import Usuarios from "./components/PanelAdmin/Usuarios";
+import ProductoAdmin from "./components/PanelAdmin/ProductoAdmin";
 
 function App() {
   return (
@@ -34,6 +37,11 @@ function App() {
 
         {/* 🔹 Checkout */}
         <Route path="/checkout/resumen" element={<Checkout />} />
+
+        {/* panel administrativo */}
+        <Route path="/configuracion" element={<AdminPanel />} />
+        <Route path="/admin/usuario" element={<Usuarios />} />
+        <Route path="/admin/producto" element={<ProductoAdmin />} />
 
         {/* 🔹 Login */}
         <Route path="/login" element={<Login />} />

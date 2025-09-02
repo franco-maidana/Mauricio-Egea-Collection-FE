@@ -1,0 +1,278 @@
+/* === Estilos base (desktop) === */
+.productos-wrap {
+  padding: 20px;
+}
+
+.productos-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.productos-table th, 
+.productos-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.productos-table th {
+  background: #f8f9fa;
+  font-weight: bold;
+}
+
+.btn-edit {
+  background: #000;
+  color: #fff;
+  padding: 5px 12px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.btn-edit:hover {
+  background: #333;
+  color: white;
+}
+
+.btn-delete {
+  background: #dc2626;
+  color: #fff;
+  padding: 5px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-delete:hover {
+  background: #b91c1c;
+}
+
+.producto-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+/* ========================= */
+/* 📦 MODAL GENERAL */
+/* ========================= */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+
+  /* 👇 Clave: limitar altura */
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+
+.modal-content h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #333;
+}
+
+.modal-content form label {
+  display: block;
+  font-weight: bold;
+  margin: 8px 0 4px;
+}
+
+.modal-content form input,
+.modal-content form select,
+.modal-content form textarea {
+  width: 95%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.modal-actions button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.modal-actions .btn-edit {
+  background: #000;
+  color: #fff;
+}
+
+.modal-actions .btn-delete {
+  background: #dc2626;
+  color: #fff;
+}
+
+.productos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.btn-create {
+  background: #16a34a;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-create:hover {
+  background: #15803d;
+}
+
+.btn-stock {
+  background: #2563eb; /* azul */
+  color: #fff;
+  padding: 5px 12px;
+  border: none;
+  border-radius: 5px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.btn-stock:hover {
+  background: #1d4ed8;
+}
+
+.stock-table {
+  width: 100%;
+  margin-top: 15px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.stock-table th,
+.stock-table td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.stock-table th {
+  background: #f4f4f4;
+  font-weight: bold;
+}
+
+
+
+/* Animación */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ✅ Mobile: cada producto se ve como card */
+@media (max-width: 480px) {
+  .productos-table {
+    display: block;
+  }
+
+  .productos-table thead {
+    display: none; /* ocultamos encabezados */
+  }
+
+  .productos-table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .productos-table tr {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  .productos-table td {
+    display: block;
+    padding: 6px 0;
+    border: none;
+    font-size: 14px;
+  }
+
+  .productos-table td img {
+    display: block;
+    width: 75px;
+    height: auto;
+    border-radius: 6px;
+  }
+
+  .productos-table td[data-label]::before {
+    content: attr(data-label) ": ";
+    font-weight: bold;
+    color: #444;
+    display: inline-block;
+    width: 120px;
+  }
+
+  /* Botones centrados en mobile */
+  .productos-table td[data-label="Acciones"] {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+   .modal-content {
+    max-width: 95%;
+    padding: 15px;
+  }
+
+  .modal-content h3 {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .modal-actions button {
+    width: 100%;
+    font-size: 15px;
+    padding: 10px;
+  }
+}
+
