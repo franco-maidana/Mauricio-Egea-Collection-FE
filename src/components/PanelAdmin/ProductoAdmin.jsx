@@ -1,4 +1,20 @@
 import { useEffect, useState, useCallback } from "react";
+import {
+  DndContext,
+  closestCenter,
+  useSensor,
+  useSensors,
+  PointerSensor,
+  KeyboardSensor,
+} from "@dnd-kit/core";
+
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+  arrayMove,
+} from "@dnd-kit/sortable";
+
+import SortableRow from "../SortableRow";
 import Global from "../../helpers/Global";
 import "./css/ProductoAdmin.css";
 
@@ -289,6 +305,14 @@ export default function ProductoAdmin() {
     }
   };
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 5, // arrastra recién después de mover 5px
+      },
+    })
+  );
+
   // ================= RENDER =================
   return (
     <div className="productos-admin">
@@ -302,68 +326,72 @@ export default function ProductoAdmin() {
       {!productos.length ? (
         <p>No hay productos disponibles.</p>
       ) : (
-        <table className="productos-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Imagen</th>
-              <th>Nombre</th>
-              <th>Precio base</th>
-              <th>Descuento</th>
-              <th>Precio final</th>
-              <th>Categoría</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {productos.map((p) => (
-              <tr key={p.id_producto}>
-                <td>{p.id_producto}</td>
-                <td>
-                  <img
-                    src={p.imagen_url}
-                    alt={p.nombre}
-                    className="producto-img"
-                  />
-                </td>
-                <td>{p.nombre}</td>
-                <td>${Number(p.precio_base).toLocaleString()}</td>
-                <td>{p.descuento > 0 ? `${p.descuento}%` : "-"}</td>
-                <td>
-                  <strong>${Number(p.precio_final).toLocaleString()}</strong>
-                </td>
-                <td>{categorias[p.categoria_id] || "Sin categoría"}</td>
-                <td>
-                  <button
-                    className="btn-edit"
-                    onClick={() => handleEditClick(p)}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    className="btn-delete"
-                    onClick={() => setConfirmDelete(p)} // guarda el producto a eliminar
-                  >
-                    Eliminar
-                  </button>
+        <DndContext
+          sensors={sensors} // 👈 agregado
+          collisionDetection={closestCenter}
+          onDragEnd={async ({ active, over }) => {
+            if (!over) return;
+            if (active.id !== over.id) {
+              const oldIndex = productos.findIndex(
+                (p) => String(p.id_producto) === active.id
+              );
+              const newIndex = productos.findIndex(
+                (p) => String(p.id_producto) === over.id
+              );
 
-                  <button
-                    className="btn-stock"
-                    onClick={() => handleVerStock(p)}
-                  >
-                    Ver stock
-                  </button>
-                  <button
-                    className="btn-stock"
-                    onClick={() => handleAgregarStock(p)}
-                  >
-                    Agregar stock
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+              const nuevosProductos = arrayMove(productos, oldIndex, newIndex);
+              setProductos(nuevosProductos);
+
+              // Guardar en backend
+              await fetch(`${Global.url}productos/reordenar`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify(
+                  nuevosProductos.map((p, index) => ({
+                    id_producto: p.id_producto,
+                    orden: index + 1,
+                  }))
+                ),
+              });
+            }
+          }}
+        >
+          <SortableContext
+            items={productos.map((p) => String(p.id_producto))}
+            strategy={verticalListSortingStrategy}
+          >
+            <table className="productos-table">
+              <thead>
+                <tr>
+                  <th>↕</th>
+                  <th>ID</th>
+                  <th>Imagen</th>
+                  <th>Nombre</th>
+                  <th>Precio base</th>
+                  <th>Descuento</th>
+                  <th>Precio final</th>
+                  <th>Categoría</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {productos.map((p) => (
+                  <SortableRow
+                    key={p.id_producto}
+                    producto={p}
+                    categorias={categorias}
+                    onEdit={handleEditClick}
+                    onDelete={setConfirmDelete}
+                    onVerStock={handleVerStock}
+                    onAgregarStock={handleAgregarStock}
+                  />
+                ))}
+              </tbody>
+            </table>
+          </SortableContext>
+        </DndContext>
       )}
 
       {/* ================== MODALES ================== */}

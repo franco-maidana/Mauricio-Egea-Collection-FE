@@ -4,6 +4,7 @@
 body {
   margin: 0;
   padding-top: 80px; /* ✅ misma altura del header */
+  font-family: "Segoe UI", Roboto, sans-serif;
 }
 
 .header-container {
@@ -53,11 +54,10 @@ body {
 }
 
 .logo-buscador.activo {
-  transform: translateX(-30%); /* desplaza todo cuando buscador está activo */
+  transform: translateX(-30%);
 }
 
 /* Logo centrado siempre */
-/* Logo centrado por defecto */
 .logo-principal {
   position: absolute;
   left: 50%;
@@ -65,7 +65,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.4s ease; /* transición suave */
+  transition: transform 0.4s ease;
 }
 
 .Logo {
@@ -73,9 +73,9 @@ body {
   margin-top: 20px;
 }
 
-/* Cuando buscador está activo → logo se corre a la derecha */
+/* Cuando buscador está activo → logo se corre */
 .header-container.buscar-activo .logo-principal {
-  transform: translateX(120%); /* ajustá el % según cuánto espacio quieras que se mueva */
+  transform: translateX(120%);
 }
 
 /* Buscador */
@@ -103,7 +103,7 @@ body {
 }
 
 .input-busqueda.activo {
-  width: 180px;   /* se expande hacia la derecha */
+  width: 180px;
   opacity: 1;
   padding: 0 0.3rem;
 }
@@ -135,11 +135,12 @@ body {
 .img-carrito,
 .img-settings {
   width: 24px;
+  transition: 0.2s;
 }
 
 .img-carrito:hover,
 .img-settings:hover {
-  width: 30px;
+  transform: scale(1.2);
 }
 
 .header-user {
@@ -156,21 +157,22 @@ body {
 }
 
 /* =========================
-   Modal
+   Modal Sidebar
 ========================= */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 250px; 
+  width: 100%; 
   height: 100%; 
-  background-color: white;
+  background-color: rgba(0,0,0,0.4); /* 🔥 overlay oscuro */
   z-index: 1000;
-  padding: 2rem 1.5rem;
-  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-  animation: slideIn 0.3s ease-out;
+  display: flex;
+  justify-content: flex-start;
+  animation: fadeIn 0.3s ease-out;
 }
 
+/* Animaciones */
 @keyframes slideIn {
   from {
     transform: translateX(-100%);
@@ -180,46 +182,49 @@ body {
   }
 }
 
-.modal-contenido {
-  display: flex;
-  flex-direction: column;
-  height: 90%;
+@keyframes fadeIn {
+  from { background-color: rgba(0,0,0,0); }
+  to   { background-color: rgba(0,0,0,0.4); }
 }
 
+/* Sidebar dentro del overlay */
+.modal-contenido {
+  background-color: #fff;
+  width: 280px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 2px 0 15px rgba(0,0,0,0.2);
+  animation: slideIn 0.3s ease-out;
+  overflow-y: auto; /* ✅ scroll vertical */
+}
+
+
+
 .modal-contenido a {
-  font-size: 1.2rem;
+  font-size: 1rem;
   text-decoration: none;
-  color: black;
+  color: #333;
 }
 
 .modal-contenido a:hover {
-  color: gray;
-}
-
-.boton-cerrar {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: transparent;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
+  color: #000;
 }
 
 .dentro-modal-titulo-cerrar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 0.5rem;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  flex-shrink: 0;
 }
 
 .titulo-modal-adentro {
-  font-size: 1.5rem;
-  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
   color: #333;
-  font-weight: bold;
 }
 
 .boton-cerrar-modal {
@@ -229,103 +234,90 @@ body {
   font-weight: bold;
   color: #666;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: 0.2s;
 }
 
 .boton-cerrar-modal:hover {
   color: #000;
 }
 
+/* Lista menú */
 .menu-lista {
   list-style: none;
-  padding: 0;
   margin: 0;
-}
-
-.menu-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex: 1; 
+  padding: 0.5rem 0;
 }
 
 .menu-item {
-  position: relative;
-  width: 100%;
-  padding: 1rem;
-  border-bottom: 1px solid #ddd;
-  box-sizing: border-box; 
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
+  color: #333;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: 0.2s;
+}
+
+.menu-item a {
+  display: block;
 }
 
 .menu-item:hover {
-  background-color: #f5f5f5;
+  background: #f5f5f5;
+  border-left: 3px solid #000;
 }
 
-.menu-bottom {
+/* Subcategorías */
+.submenu-categorias {
+  margin-top: 0.4rem;
+  margin-left: 1rem;
+  padding-left: 0.5rem;
+  border-left: 2px solid #ddd;
   list-style: none;
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid #ddd;
-  padding-top: 1rem;
-  display: none;
-}
-
-.submenu-categorias {
-  display: none; 
-  position: absolute;
-  top: 0;
-  left: 100%;
-  background-color: white;
-  border-left: 1px solid #ddd;
-  padding: 1rem;
-  min-width: 200px;
-  box-shadow: 2px 2px 8px rgba(0,0,0,0.15);
-}
-
-.menu-item:hover .submenu-categorias {
-  display: block; 
-}
-
-.btn-categoria {
-  display: block;
-  width: 100%;
-  padding: 0.5rem;
-  border: none;
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
-}
-
-.btn-categoria:hover {
-  background-color: #f0f0f0;
-}
-
-.submenu-categorias {
-  list-style: none; 
-  padding: 0;
-  margin: 5px 0 0 0;
-  background-color: #fff;
-  border: 1px solid #ddd; 
-  border-radius: 4px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); 
-  display: none;
-  position: absolute;
-  z-index: 10;
 }
 
 .submenu-categorias li {
-  padding: 8px 15px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  white-space: nowrap; 
+  padding: 0.4rem 0;
+  font-size: 0.9rem;
 }
 
-.submenu-categorias li:hover {
-  background-color: #f0f0f0;
+.submenu-categorias li a {
+  color: #555;
 }
 
-.menu-item:hover .submenu-categorias {
-  display: block;
+.submenu-categorias li a:hover {
+  color: #000;
+  font-weight: 500;
+}
+
+/* Parte inferior */
+.menu-bottom {
+  list-style: none;
+  padding: 1rem 0;
+  border-top: 1px solid #eee;
+  margin: 0;
+}
+
+.menu-bottom li {
+  padding: 0.8rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+}
+
+.menu-bottom li:hover {
+  background: #f9f9f9;
+}
+
+.img-carrito,
+.img-settings {
+  width: 20px;
+  opacity: 0.8;
+}
+
+.img-carrito:hover,
+.img-settings:hover {
+  opacity: 1;
 }
 
 .carrito-icono {
@@ -334,19 +326,61 @@ body {
 
 .contador-carrito {
   position: absolute;
-  top: -8px;
-  right: -8px;
-  background-color: black;
-  color: white;
-  font-size: 12px;
+  top: -6px;
+  right: -10px;
+  background-color: #000;
+  color: #fff;
+  font-size: 11px;
   font-weight: bold;
   border-radius: 50%;
   padding: 2px 6px;
 }
 
+.menu-wrapper {
+  flex: 1;
+  overflow-y: auto; /* ✅ scroll en contenido largo */
+}
+
+/* Pie fijo abajo */
+.menu-bottom {
+  border-top: 1px solid #eee;
+  padding: 1rem;
+  flex-shrink: 0;
+}
+
+/* Subcategorías estilo acordeón */
+.submenu-categorias {
+  list-style: none;
+  margin: 0;
+  padding-left: 1rem;
+  border-left: 2px solid #ddd;
+  max-height: 0;            /* 🔥 oculto por defecto */
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.submenu-categorias.activo {
+  max-height: 500px;        /* 🔥 se despliega */
+}
+
+.submenu-categorias li {
+  padding: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.submenu-categorias li a {
+  text-decoration: none;
+  color: #555;
+}
+
+.submenu-categorias li a:hover {
+  color: #000;
+  font-weight: 500;
+}
+
 
 /* =========================
-Mobile
+   Mobile
 ========================= */
 @media (max-width: 480px) {
   .logo-principal {
@@ -368,7 +402,7 @@ Mobile
     margin-top: 10px;
   }
 
-  .menu-bottom{
+  .menu-bottom {
     display: block;
   }
 }

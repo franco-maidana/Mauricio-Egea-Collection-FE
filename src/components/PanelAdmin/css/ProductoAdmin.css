@@ -191,6 +191,10 @@
   font-weight: bold;
 }
 
+.productos-table tbody tr {
+  position: relative; /* 👈 Necesario para que transform funcione */
+}
+
 
 
 /* Animación */

@@ -12,8 +12,9 @@ const Header = () => {
   const [scrollActivo, setScrollActivo] = useState(false);
   const [termino, setTermino] = useState("");
   const [mostrarSaludo, setMostrarSaludo] = useState(false);
+  const [categoriasAbiertas, setCategoriasAbiertas] = useState(false);
 
-  const { carritoCount, setCarritoCount } = UseCarrito(); // 👈 ahora usamos el contexto
+  const { carritoCount, setCarritoCount } = UseCarrito();
   const { user, logout } = UseAuth();
   const navigate = useNavigate();
 
@@ -55,6 +56,7 @@ const Header = () => {
 
   const handleLogout = async () => {
     await logout();
+    setModalAbierto(false);
     navigate("/");
   };
 
@@ -70,7 +72,7 @@ const Header = () => {
         const data = await res.json();
 
         if (res.ok && data.ok) {
-          setCarritoCount(data.carrito.length); // ✅ se guarda en el contexto
+          setCarritoCount(data.carrito.length);
         } else {
           setCarritoCount(0);
         }
@@ -195,13 +197,26 @@ const Header = () => {
 
             <div className="menu-wrapper">
               <ul className="menu-lista">
+                {/* Productos con submenú */}
                 <li className="menu-item">
-                  Productos
-                  <ul className="submenu-categorias">
+                  <button
+                    className="btn-categoria"
+                    onClick={() => setCategoriasAbiertas(!categoriasAbiertas)}
+                  >
+                    Productos
+                  </button>
+                  <ul
+                    className={`submenu-categorias ${
+                      categoriasAbiertas ? "activo" : ""
+                    }`}
+                  >
                     <li key="all-products" className="all-products">
                       <Link
                         to="/productos"
-                        onClick={() => setModalAbierto(false)}
+                        onClick={() => {
+                          setCategoriasAbiertas(false); // ✅ cierra submenú
+                          setModalAbierto(false);       // ✅ cierra modal
+                        }}
                       >
                         Ver Todos
                       </Link>
@@ -210,7 +225,10 @@ const Header = () => {
                       <li key={cat.categoria_id}>
                         <Link
                           to={`/productos/categoria/${cat.categoria_id}`}
-                          onClick={() => setModalAbierto(false)}
+                          onClick={() => {
+                            setCategoriasAbiertas(false); // ✅ cierra submenú
+                            setModalAbierto(false);       // ✅ cierra modal
+                          }}
                         >
                           {cat.nombre}
                         </Link>
@@ -219,6 +237,7 @@ const Header = () => {
                   </ul>
                 </li>
 
+                {/* Descuentos */}
                 <li className="menu-item">
                   <Link
                     to="/productos/descuentos"
@@ -232,7 +251,7 @@ const Header = () => {
               {/* 🔽 Parte fija abajo */}
               <ul className="menu-bottom">
                 <li className="carrito-icono">
-                  <Link to="/carrito">
+                  <Link to="/carrito" onClick={() => setModalAbierto(false)}>
                     <img
                       className="img-carrito"
                       src="/shoppingCart.png"
@@ -242,8 +261,8 @@ const Header = () => {
                     {carritoCount > 0 && (
                       <span className="contador-carrito">{carritoCount}</span>
                     )}
+                    Carrito de compras
                   </Link>
-                  Carrito de compras
                 </li>
                 <li className="menu-item">
                   {user ? (
@@ -256,11 +275,30 @@ const Header = () => {
                       </button>
                     </>
                   ) : (
-                    <Link to="/login" onClick={() => setModalAbierto(false)}>
+                    <Link
+                      to="/login"
+                      onClick={() => setModalAbierto(false)}
+                    >
                       Iniciar sesión
                     </Link>
                   )}
                 </li>
+                {user && user.role === "admin" && (
+                  <li>
+                    <Link
+                      to="/configuracion"
+                      onClick={() => setModalAbierto(false)}
+                    >
+                      <img
+                        className="img-settings"
+                        src="/settings.png"
+                        alt="Configuracion"
+                        title="Configuracion"
+                      />{" "}
+                      Configuración
+                    </Link>
+                  </li>
+                )}
               </ul>
             </div>
           </div>

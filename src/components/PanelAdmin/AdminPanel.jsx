@@ -1,15 +1,16 @@
-import { Link } from "react-router-dom"; // 👈 necesario
-import './css/AdminPanel.css'
+import { Link } from "react-router-dom";
+import "./css/AdminPanel.css";
 
 const AdminPanel = () => {
-  
-
   return (
     <div className="panel-admin">
-      <ul className="Usuarios"> 
-        <Link to="/admin/usuario" className="btn-nombre" >Usuarios</Link>
-        <Link to="/admin/producto" className="btn-nombre" >Producto</Link>
-      </ul>
+      <h2>Panel Administrador</h2>
+      <Link to="/admin/usuario" className="btn-admin">
+        Usuarios
+      </Link>
+      <Link to="/admin/producto" className="btn-admin">
+        Productos
+      </Link>
     </div>
   );
 };
