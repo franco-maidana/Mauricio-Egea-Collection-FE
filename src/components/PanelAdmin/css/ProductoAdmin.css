@@ -1,4 +1,9 @@
 /* === Estilos base (desktop) === */
+.productos-admin {
+  margin-top: 30px; /* ajustá este valor al alto de tu header */
+}
+
+
 .productos-wrap {
   padding: 20px;
 }
@@ -70,24 +75,27 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0,0,0,0.5);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px;
   z-index: 999;
+
+  overflow-y: auto; /* 🔥 habilita scroll vertical */
 }
 
 .modal-content {
   background: #fff;
   padding: 20px;
-  border-radius: 10px;
-  width: 90%;
+  border-radius: 12px;
   max-width: 600px;
-
-  /* 👇 Clave: limitar altura */
-  max-height: 80vh;
-  overflow-y: auto;
+  width: 100%;
+  max-height: 90vh;   /* 🔥 límite: no más del 90% de la pantalla */
+  overflow-y: auto;   /* 🔥 si el contenido es largo, scrollea dentro */
+  transform: translateY(-20px); /* 🔥 lo sube 40px */
 }
+
 
 
 .modal-content h3 {
@@ -115,8 +123,8 @@
 
 .modal-actions {
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+  flex-direction: column;
+  gap: 10px; /* 🔥 separa los botones entre sí */
 }
 
 .modal-actions button {
@@ -195,7 +203,73 @@
   position: relative; /* 👈 Necesario para que transform funcione */
 }
 
+.acciones-header {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap; /* por si no entra, baja automático */
+}
 
+.btn-create {
+  background-color: #28a745; /* verde */
+  color: #fff;
+  font-weight: bold;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-create:hover {
+  background-color: #218838;
+}
+
+.btn-discount {
+  background-color: #f6c90e; /* amarillo */
+  color: #000;
+  font-weight: bold;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-discount:hover {
+  background-color: #e0b80d;
+}
+
+.btn-discount-remove {
+  background-color: #d90f74; /* rosa fuerte */
+  color: #fff;
+  font-weight: bold;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-discount-remove:hover {
+  background-color: #b00c5e;
+}
+
+.modal-content label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px; /* espacio entre label e input */
+}
+
+.modal-content input[type="number"],
+.modal-content input[type="text"],
+.modal-content select,
+.modal-content textarea {
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 16px; /* 🔥 espacio debajo del input */
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
 
 /* Animación */
 @keyframes fadeIn {
@@ -205,6 +279,18 @@
 
 /* ✅ Mobile: cada producto se ve como card */
 @media (max-width: 480px) {
+
+  .acciones-header {
+    flex-direction: column; /* cambia a columna en móviles */
+    gap: 8px; /* un poco menos de espacio */
+    width: 100%; /* ocupa todo el ancho disponible */
+  }
+
+  .acciones-header button {
+    width: 100%; /* cada botón ocupa toda la fila */
+    text-align: center;
+  }
+
   .productos-table {
     display: block;
   }
@@ -258,9 +344,9 @@
     margin-top: 10px;
   }
 
-   .modal-content {
-    max-width: 95%;
-    padding: 15px;
+  .modal-content {
+    transform: translateX(-20px); /* 🔥 corrimiento suave en mobile */
+    max-width: 85%; /* que no se desborde */
   }
 
   .modal-content h3 {

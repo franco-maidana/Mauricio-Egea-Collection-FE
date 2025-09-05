@@ -1,21 +1,20 @@
 import { useEffect, useState, useCallback } from "react";
-import {
-  DndContext,
-  closestCenter,
-  useSensor,
-  useSensors,
-  PointerSensor,
-  KeyboardSensor,
-} from "@dnd-kit/core";
-
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-  arrayMove,
-} from "@dnd-kit/sortable";
-
-import SortableRow from "../SortableRow";
+import { useSensor, useSensors, PointerSensor } from "@dnd-kit/core";
 import Global from "../../helpers/Global";
+import EditarProductoModal from "./Modales/EditarProductoModal";
+import ConfirmarEdicionModal from "./Modales/ConfirmarEdicionModal";
+import CrearProductoModal from "./Modales/CrearProductoModal";
+import ConfirmarCreacionModal from "./Modales/ConfirmarCreacionModal";
+import VerStockModal from "./Modales/VerStockModal";
+import AgregarStockModal from "./Modales/AgregarStockModal";
+import ConfirmarStockModal from "./Modales/ConfirmarStockModal";
+import MensajeModal from "./Modales/MensajeModal";
+import ConfirmarEliminacionModal from "./Modales/ConfirmarEliminacionModal";
+import ProductosTable from "./Modales/ProductosTable";
+import DescuentoGlobalModal from "./Modales/DescuentoGlobalModal";
+import EliminarDescuentoGlobalModal from "./Modales/EliminarDescuentoGlobalModal";
+import DescuentoCategoriaModal from "./Modales/DescuentoCategoriaModal";
+import EliminarDescuentoCategoriaModal from "./Modales/EliminarDescuentoCategoriaModal";
 import "./css/ProductoAdmin.css";
 
 export default function ProductoAdmin() {
@@ -313,491 +312,314 @@ export default function ProductoAdmin() {
     })
   );
 
+  // ================= DESCUENTO GLOBAL =================
+  const [showGlobalDiscountModal, setShowGlobalDiscountModal] = useState(false);
+  const [showRemoveGlobalDiscountModal, setShowRemoveGlobalDiscountModal] = useState(false);
+  const [globalDiscount, setGlobalDiscount] = useState("");
+
+  const doApplyGlobalDiscount = async () => {
+    try {
+      const res = await fetch(`${Global.url}productos/descuento/global`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        credentials: "include",
+        body: new URLSearchParams({ porcentaje: globalDiscount }),
+      });
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
+        setSuccessMessage(`✅ Descuento global del ${globalDiscount}% aplicado`);
+        fetchProductos();
+        setShowGlobalDiscountModal(false);
+        setGlobalDiscount("");
+      } else {
+        setSuccessMessage("❌ Error aplicando descuento: " + data.message);
+      }
+    } catch (err) {
+      console.error("❌ Error aplicando descuento global:", err);
+    }
+  };
+
+
+  const doRemoveGlobalDiscount = async () => {
+    try {
+      const res = await fetch(`${Global.url}productos/descuento/quitar`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
+        setSuccessMessage("✅ Descuento global eliminado");
+        fetchProductos();
+        setShowRemoveGlobalDiscountModal(false);
+      } else {
+        setSuccessMessage("❌ Error eliminando descuento: " + data.message);
+      }
+    } catch (err) {
+      console.error("❌ Error eliminando descuento global:", err);
+    }
+};
+
+  // ================= DESCUENTO POR CATEGORÍA =================
+  const [showCategoriaDiscountModal, setShowCategoriaDiscountModal] = useState(false);
+  const [showRemoveCategoriaDiscountModal, setShowRemoveCategoriaDiscountModal] = useState(false);
+  const [categoriaDiscount, setCategoriaDiscount] = useState("");
+  const [categoriaId, setCategoriaId] = useState("");
+  const [selectedCategoria, setSelectedCategoria] = useState("");
+
+
+  // Aplicar descuento por categoría
+  const doApplyCategoriaDiscount = async () => {
+    try {
+      const res = await fetch(`${Global.url}productos/descuento/categoria/${categoriaId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        credentials: "include",
+        body: new URLSearchParams({ porcentaje: categoriaDiscount }),
+      });
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
+        setSuccessMessage(`✅ Descuento del ${categoriaDiscount}% aplicado a la categoría ${categoriaId}`);
+        fetchProductos();
+        setShowCategoriaDiscountModal(false);
+        setCategoriaDiscount("");
+        setCategoriaId("");
+      } else {
+        setSuccessMessage("❌ Error aplicando descuento: " + data.message);
+      }
+    } catch (err) {
+      console.error("❌ Error aplicando descuento por categoría:", err);
+    }
+  };
+
+  // Quitar descuento por categoría
+  const doRemoveCategoriaDiscount = async () => {
+    try {
+      if (!selectedCategoria) {
+        setSuccessMessage("❌ Tenés que seleccionar una categoría");
+        return;
+      }
+
+      const res = await fetch(`${Global.url}productos/descuento/categoria/quitar/${selectedCategoria}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
+        setSuccessMessage(`✅ ${data.message}`);
+        fetchProductos();
+        setShowRemoveCategoriaDiscountModal(false);
+        setSelectedCategoria(""); // limpiar selección
+      } else {
+        setSuccessMessage("❌ Error eliminando descuento: " + data.message);
+      }
+    } catch (err) {
+      console.error("❌ Error eliminando descuento por categoría:", err);
+    }
+  };
+
+
+  // ================= MODIFICAR STOCK =================
+  const doUpdateStock = async (id_producto, color_id, talle_id, nuevoStock) => {
+    try {
+      const res = await fetch(
+        `${Global.url}stock/producto/${id_producto}/color/${color_id}/talle/${talle_id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ stock: nuevoStock }),
+        }
+      );
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
+        setSuccessMessage("✅ Stock actualizado con éxito");
+
+        // refrescamos la tabla de stock sin cerrar modal
+        const resStock = await fetch(`${Global.url}stock/producto/${id_producto}`, {
+          credentials: "include",
+        });
+        const stockData = await resStock.json();
+        if (resStock.ok && stockData.ok) setStockProducto(stockData.data || []);
+      } else {
+        setSuccessMessage("❌ Error actualizando stock: " + data.message);
+      }
+    } catch (err) {
+      console.error("❌ Error actualizando stock:", err);
+    }
+  };
+
+
   // ================= RENDER =================
   return (
     <div className="productos-admin">
       <div className="productos-header">
-        <h2>📦 Gestión de Productos</h2>
-        <button className="btn-create" onClick={() => setShowCreateModal(true)}>
-          ➕ Nuevo producto
-        </button>
+        {/* <h2>📦 Gestión de Productos</h2> */}
+        <div className="acciones-header">
+          <button className="btn-create" onClick={() => setShowCreateModal(true)}>
+            ➕ Nuevo producto
+          </button>
+          <button className="btn-discount" onClick={() => setShowGlobalDiscountModal(true)}>
+            💸 Agregar descuento global
+          </button>
+          <button className="btn-discount-remove" onClick={() => setShowRemoveGlobalDiscountModal(true)}>
+            ❌ Eliminar descuento global
+          </button>
+          <button className="btn-discount" onClick={() => setShowCategoriaDiscountModal(true)}>
+            🏷️ Descuento por categoría
+          </button>
+          <button className="btn-discount-remove" onClick={() => setShowRemoveCategoriaDiscountModal(true)}>
+            ❌ Quitar descuento categoría
+          </button>
+        </div>
       </div>
 
-      {!productos.length ? (
-        <p>No hay productos disponibles.</p>
-      ) : (
-        <DndContext
-          sensors={sensors} // 👈 agregado
-          collisionDetection={closestCenter}
-          onDragEnd={async ({ active, over }) => {
-            if (!over) return;
-            if (active.id !== over.id) {
-              const oldIndex = productos.findIndex(
-                (p) => String(p.id_producto) === active.id
-              );
-              const newIndex = productos.findIndex(
-                (p) => String(p.id_producto) === over.id
-              );
 
-              const nuevosProductos = arrayMove(productos, oldIndex, newIndex);
-              setProductos(nuevosProductos);
+      <ProductosTable
+        productos={productos}
+        setProductos={setProductos}
+        categorias={categorias}
+        sensors={sensors}
+        onEdit={handleEditClick}
+        onDelete={setConfirmDelete}
+        onVerStock={handleVerStock}
+        onAgregarStock={handleAgregarStock}
+      />
 
-              // Guardar en backend
-              await fetch(`${Global.url}productos/reordenar`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify(
-                  nuevosProductos.map((p, index) => ({
-                    id_producto: p.id_producto,
-                    orden: index + 1,
-                  }))
-                ),
-              });
-            }
-          }}
-        >
-          <SortableContext
-            items={productos.map((p) => String(p.id_producto))}
-            strategy={verticalListSortingStrategy}
-          >
-            <table className="productos-table">
-              <thead>
-                <tr>
-                  <th>↕</th>
-                  <th>ID</th>
-                  <th>Imagen</th>
-                  <th>Nombre</th>
-                  <th>Precio base</th>
-                  <th>Descuento</th>
-                  <th>Precio final</th>
-                  <th>Categoría</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {productos.map((p) => (
-                  <SortableRow
-                    key={p.id_producto}
-                    producto={p}
-                    categorias={categorias}
-                    onEdit={handleEditClick}
-                    onDelete={setConfirmDelete}
-                    onVerStock={handleVerStock}
-                    onAgregarStock={handleAgregarStock}
-                  />
-                ))}
-              </tbody>
-            </table>
-          </SortableContext>
-        </DndContext>
+      {showGlobalDiscountModal && (
+        <DescuentoGlobalModal
+          globalDiscount={globalDiscount}
+          setGlobalDiscount={setGlobalDiscount}
+          onConfirm={doApplyGlobalDiscount}
+          onCancel={() => setShowGlobalDiscountModal(false)}
+        />
       )}
+
+      {showRemoveGlobalDiscountModal && (
+        <EliminarDescuentoGlobalModal
+          onConfirm={doRemoveGlobalDiscount}
+          onCancel={() => setShowRemoveGlobalDiscountModal(false)}
+        />
+      )}
+
+      {showCategoriaDiscountModal && (
+        <DescuentoCategoriaModal
+          categorias={categorias}
+          categoriaId={categoriaId}
+          setCategoriaId={setCategoriaId}
+          categoriaDiscount={categoriaDiscount}
+          setCategoriaDiscount={setCategoriaDiscount}
+          onConfirm={doApplyCategoriaDiscount}
+          onCancel={() => setShowCategoriaDiscountModal(false)}
+        />
+      )}
+      
+      {showRemoveCategoriaDiscountModal && (
+        <EliminarDescuentoCategoriaModal
+          categorias={categorias}
+          selectedCategoria={selectedCategoria}
+          setSelectedCategoria={setSelectedCategoria}
+          onConfirm={doRemoveCategoriaDiscount}
+          onCancel={() => setShowRemoveCategoriaDiscountModal(false)}
+        />
+      )}
+
+
+
 
       {/* ================== MODALES ================== */}
       {/* Editar Producto */}
       {editProducto && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>Editar producto</h3>
-            <form onSubmit={handleSaveClick}>
-              <label>Nombre</label>
-              <input
-                type="text"
-                value={formData.nombre}
-                onChange={(e) =>
-                  setFormData({ ...formData, nombre: e.target.value })
-                }
-              />
-
-              <label>Descripción</label>
-              <textarea
-                value={formData.descripcion}
-                onChange={(e) =>
-                  setFormData({ ...formData, descripcion: e.target.value })
-                }
-              />
-
-              <label>Precio base</label>
-              <input
-                type="number"
-                value={formData.precio_base}
-                onChange={(e) =>
-                  setFormData({ ...formData, precio_base: e.target.value })
-                }
-              />
-
-              <label>Descuento (%)</label>
-              <input
-                type="number"
-                value={formData.descuento}
-                onChange={(e) =>
-                  setFormData({ ...formData, descuento: e.target.value })
-                }
-              />
-
-              <label>Precio final</label>
-              <input
-                type="text"
-                value={(
-                  Number(formData.precio_base || 0) -
-                  Number(formData.precio_base || 0) *
-                    (Number(formData.descuento || 0) / 100)
-                ).toLocaleString()}
-                readOnly
-              />
-
-              <label>Categoría</label>
-              <select
-                value={formData.categoria_id}
-                onChange={(e) =>
-                  setFormData({ ...formData, categoria_id: e.target.value })
-                }
-              >
-                {Object.entries(categorias).map(([id, nombre]) => (
-                  <option key={id} value={id}>
-                    {nombre}
-                  </option>
-                ))}
-              </select>
-
-              <label>Imagen</label>
-              <input
-                type="file"
-                onChange={(e) =>
-                  setFormData({ ...formData, imagen: e.target.files[0] })
-                }
-              />
-
-              <div className="modal-actions">
-                <button type="submit" className="btn-edit">
-                  Guardar
-                </button>
-                <button
-                  type="button"
-                  className="btn-delete"
-                  onClick={() => setEditProducto(null)}
-                >
-                  Cancelar
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <EditarProductoModal
+          formData={formData}
+          setFormData={setFormData}
+          categorias={categorias}
+          onClose={() => setEditProducto(null)}
+          onSaveClick={handleSaveClick}
+        />
       )}
 
       {/* Confirmación Editar */}
       {confirmSave && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>Confirmar cambios</h3>
-            <p>
-              ¿Seguro que deseas guardar los cambios en{" "}
-              <strong>{formData.nombre}</strong>?
-            </p>
-            <div className="modal-actions">
-              <button className="btn-edit" onClick={doSave}>
-                Sí, guardar
-              </button>
-              <button
-                className="btn-delete"
-                onClick={() => setConfirmSave(false)}
-              >
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
+        <ConfirmarEdicionModal
+          formData={formData}
+          onConfirm={doSave}
+          onCancel={() => setConfirmSave(false)}
+        />
       )}
 
       {/* Crear Producto */}
       {showCreateModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>Crear nuevo producto</h3>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                setConfirmCreate(true);
-              }}
-            >
-              <label>Nombre</label>
-              <input
-                type="text"
-                value={newProduct.nombre}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, nombre: e.target.value })
-                }
-              />
-
-              <label>Descripción</label>
-              <textarea
-                value={newProduct.descripcion}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, descripcion: e.target.value })
-                }
-              />
-
-              <label>Precio base</label>
-              <input
-                type="number"
-                value={newProduct.precio_base}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, precio_base: e.target.value })
-                }
-              />
-
-              <label>Descuento (%)</label>
-              <input
-                type="number"
-                value={newProduct.descuento}
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, descuento: e.target.value })
-                }
-              />
-
-              <label>Precio final</label>
-              <input
-                type="text"
-                value={(
-                  Number(newProduct.precio_base || 0) -
-                  Number(newProduct.precio_base || 0) *
-                    (Number(newProduct.descuento || 0) / 100)
-                ).toLocaleString()}
-                readOnly
-              />
-
-              <label>Categoría</label>
-              <select
-                value={newProduct.categoria_id}
-                onChange={(e) =>
-                  setNewProduct({
-                    ...newProduct,
-                    categoria_id: e.target.value,
-                  })
-                }
-              >
-                <option value="">-- Seleccionar --</option>
-                {Object.entries(categorias).map(([id, nombre]) => (
-                  <option key={id} value={id}>
-                    {nombre}
-                  </option>
-                ))}
-              </select>
-
-              <label>Imagen</label>
-              <input
-                type="file"
-                onChange={(e) =>
-                  setNewProduct({ ...newProduct, imagen: e.target.files[0] })
-                }
-              />
-
-              <div className="modal-actions">
-                <button type="submit" className="btn-edit">
-                  Crear
-                </button>
-                <button
-                  type="button"
-                  className="btn-delete"
-                  onClick={() => setShowCreateModal(false)}
-                >
-                  Cancelar
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <CrearProductoModal
+          newProduct={newProduct}
+          setNewProduct={setNewProduct}
+          categorias={categorias}
+          onClose={() => setShowCreateModal(false)}
+          onSubmit={() => setConfirmCreate(true)}
+        />
       )}
 
       {/* Confirmación Crear */}
       {confirmCreate && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>Confirmar creación</h3>
-            <p>
-              ¿Seguro que deseas crear el producto{" "}
-              <strong>{newProduct.nombre}</strong>?
-            </p>
-            <div className="modal-actions">
-              <button className="btn-edit" onClick={doCreate}>
-                Sí, crear
-              </button>
-              <button
-                className="btn-delete"
-                onClick={() => setConfirmCreate(false)}
-              >
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
+        <ConfirmarCreacionModal
+          newProduct={newProduct}
+          onConfirm={doCreate}
+          onCancel={() => setConfirmCreate(false)}
+        />
       )}
 
       {/* Ver Stock */}
       {showVerStockModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>Stock de {productoSeleccionado?.nombre}</h3>
-            {!stockProducto.length ? (
-              <p>No hay stock cargado para este producto.</p>
-            ) : (
-              <table className="stock-table">
-                <thead>
-                  <tr>
-                    <th>Talle</th>
-                    <th>Color</th>
-                    <th>Cantidad</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {stockProducto.map((s, i) => (
-                    <tr key={i}>
-                      <td>{s.etiqueta}</td>
-                      <td>{s.color}</td>
-                      <td>{s.stock}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-            <div className="modal-actions">
-              <button
-                className="btn-delete"
-                onClick={() => setShowVerStockModal(false)}
-              >
-                Cerrar
-              </button>
-            </div>
-          </div>
-        </div>
+        <VerStockModal
+          productoSeleccionado={productoSeleccionado}
+          stockProducto={stockProducto}
+          onClose={() => setShowVerStockModal(false)}
+          onUpdateStock={doUpdateStock} 
+        />
       )}
+
 
       {/* Agregar Stock */}
       {showAgregarStockModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>Agregar stock al producto</h3>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                setConfirmStock(true);
-              }}
-            >
-              <label>Talle</label>
-              <select
-                value={stockForm.talle_id}
-                onChange={(e) =>
-                  setStockForm({ ...stockForm, talle_id: e.target.value })
-                }
-              >
-                <option value="">-- Seleccionar --</option>
-                {talles.map((t) => (
-                  <option key={t.talle_id} value={t.talle_id}>
-                    {t.etiqueta}
-                  </option>
-                ))}
-              </select>
-
-              <label>Color</label>
-              <select
-                value={stockForm.color_id}
-                onChange={(e) =>
-                  setStockForm({ ...stockForm, color_id: e.target.value })
-                }
-              >
-                <option value="">-- Seleccionar --</option>
-                {colores.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.nombre}
-                  </option>
-                ))}
-              </select>
-
-              <label>Cantidad</label>
-              <input
-                type="number"
-                value={stockForm.stock}
-                onChange={(e) =>
-                  setStockForm({ ...stockForm, stock: e.target.value })
-                }
-              />
-
-              <div className="modal-actions">
-                <button type="submit" className="btn-edit">
-                  Guardar
-                </button>
-                <button
-                  type="button"
-                  className="btn-delete"
-                  onClick={() => setShowAgregarStockModal(false)}
-                >
-                  Cancelar
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <AgregarStockModal
+          stockForm={stockForm}
+          setStockForm={setStockForm}
+          talles={talles}
+          colores={colores}
+          onClose={() => setShowAgregarStockModal(false)}
+          onSubmit={() => setConfirmStock(true)}
+        />
       )}
 
       {/* Confirmación Stock */}
       {confirmStock && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>Confirmar creación de stock</h3>
-            <p>
-              ¿Seguro que deseas agregar <strong>{stockForm.stock}</strong>{" "}
-              unidades (Color ID: {stockForm.color_id}, Talle ID:{" "}
-              {stockForm.talle_id}) al producto{" "}
-              <strong>ID {stockForm.id_producto}</strong>?
-            </p>
-            <div className="modal-actions">
-              <button className="btn-edit" onClick={doCreateStock}>
-                Sí, agregar
-              </button>
-              <button
-                className="btn-delete"
-                onClick={() => setConfirmStock(false)}
-              >
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
+        <ConfirmarStockModal
+          stockForm={stockForm}
+          onConfirm={doCreateStock}
+          onCancel={() => setConfirmStock(false)}
+        />
       )}
 
       {/* Feedback */}
       {successMessage && (
-        <div className="modal">
-          <div className="modal-content">
-            <p>{successMessage}</p>
-            <button onClick={() => setSuccessMessage("")}>Cerrar</button>
-          </div>
-        </div>
+        <MensajeModal
+          message={successMessage}
+          onClose={() => setSuccessMessage("")}
+        />
       )}
 
       {/* ================= CONFIRMACIÓN ELIMINAR ================= */}
       {confirmDelete && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>Confirmar eliminación</h3>
-            <p>
-              ¿Seguro que deseas eliminar el producto{" "}
-              <strong>{confirmDelete.nombre}</strong>?
-            </p>
-            <div className="modal-actions">
-              <button className="btn-delete" onClick={doDelete}>
-                Sí, eliminar
-              </button>
-              <button
-                className="btn-edit"
-                onClick={() => setConfirmDelete(null)}
-              >
-                Cancelar
-              </button>
-            </div>
-          </div>
-        </div>
+        <ConfirmarEliminacionModal
+          producto={confirmDelete}
+          onConfirm={doDelete}
+          onCancel={() => setConfirmDelete(null)}
+        />
       )}
     </div>
   );
