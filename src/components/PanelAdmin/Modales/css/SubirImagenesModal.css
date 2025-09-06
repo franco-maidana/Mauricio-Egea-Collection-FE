@@ -1,0 +1,140 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Título */
+.modal-content h3 {
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+/* Grilla de imágenes */
+.galeria-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.galeria-item {
+  position: relative;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.galeria-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.btn-delete-img {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(255, 0, 0, 0.8);
+  border: none;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Placeholder con + */
+.placeholder {
+  font-size: 2rem;
+  color: #999;
+}
+
+/* Select */
+.form-input {
+  width: 100%;
+  margin: 10px 0;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Botones */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.btn-create {
+  flex: 1;
+  padding: 10px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-delete {
+  flex: 1;
+  padding: 10px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ================== 📱 RESPONSIVE ================== */
+@media (max-width: 768px) {
+  .galeria-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablets */
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    width: 95%;
+    padding: 15px;
+  }
+
+  .galeria-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en celulares */
+    gap: 10px;
+  }
+
+  .galeria-item {
+    height: 90px;
+  }
+
+  .modal-actions {
+    flex-direction: column; /* Botones uno arriba del otro */
+  }
+
+  .btn-create, .btn-delete {
+    width: 100%;
+  }
+}

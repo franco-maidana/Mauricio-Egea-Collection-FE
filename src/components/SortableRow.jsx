@@ -8,6 +8,7 @@ export default function SortableRow({
   onDelete,
   onVerStock,
   onAgregarStock,
+  onSubirImagenes
 }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
@@ -41,6 +42,8 @@ export default function SortableRow({
           src={producto.imagen_url}
           alt={producto.nombre}
           className="producto-img"
+          style={{ cursor: "pointer" }}
+          onClick={() => onSubirImagenes(producto)} // 👈 nuevo callback
         />
       </td>
       <td>{producto.nombre}</td>

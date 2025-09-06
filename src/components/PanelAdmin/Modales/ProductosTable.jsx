@@ -13,6 +13,7 @@ export default function ProductosTable({
   onDelete,
   onVerStock,
   onAgregarStock,
+  onSubirImagenes
 }) {
   // Manejo de drag & drop
   const handleDragEnd = async ({ active, over }) => {
@@ -82,6 +83,7 @@ export default function ProductosTable({
                 onDelete={onDelete}
                 onVerStock={onVerStock}
                 onAgregarStock={onAgregarStock}
+                onSubirImagenes={onSubirImagenes}
               />
             ))}
           </tbody>

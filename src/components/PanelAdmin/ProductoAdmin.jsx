@@ -15,6 +15,7 @@ import DescuentoGlobalModal from "./Modales/DescuentoGlobalModal";
 import EliminarDescuentoGlobalModal from "./Modales/EliminarDescuentoGlobalModal";
 import DescuentoCategoriaModal from "./Modales/DescuentoCategoriaModal";
 import EliminarDescuentoCategoriaModal from "./Modales/EliminarDescuentoCategoriaModal";
+import SubirImagenesModal from "./Modales/SubirImagenesModal";
 import "./css/ProductoAdmin.css";
 
 export default function ProductoAdmin() {
@@ -455,6 +456,15 @@ export default function ProductoAdmin() {
   };
 
 
+  const [showSubirImagenesModal, setShowSubirImagenesModal] = useState(false);
+  const [productoParaImagen, setProductoParaImagen] = useState(null);
+
+  const handleSubirImagenes = (producto) => {
+    setProductoParaImagen(producto);
+    setShowSubirImagenesModal(true);
+  };
+
+
   // ================= RENDER =================
   return (
     <div className="productos-admin">
@@ -489,7 +499,17 @@ export default function ProductoAdmin() {
         onDelete={setConfirmDelete}
         onVerStock={handleVerStock}
         onAgregarStock={handleAgregarStock}
+        onSubirImagenes={handleSubirImagenes}   // 👈 lo pasamos
       />
+
+      {showSubirImagenesModal && (
+        <SubirImagenesModal
+          producto={productoParaImagen}
+          colores={colores}                // 👈 le pasamos la lista de colores
+          onClose={() => setShowSubirImagenesModal(false)}
+          onUploaded={() => console.log("Imagen subida!")}
+        />
+      )}
 
       {showGlobalDiscountModal && (
         <DescuentoGlobalModal
