@@ -1,9 +1,7 @@
-/* =========================
-   Principal
-========================= */
+
 body {
   margin: 0;
-  padding-top: 80px; /* ✅ misma altura del header */
+  padding-top: 80px; 
   font-family: "Segoe UI", Roboto, sans-serif;
 }
 
@@ -22,9 +20,7 @@ body {
   z-index: 100;    
 }
 
-/* =========================
-   Izquierdo
-========================= */
+
 .menu-principal {
   display: flex;
   flex-direction: row;
@@ -41,9 +37,7 @@ body {
   font-size: 1rem;
 }
 
-/* =========================
-   Centro → logo + buscador
-========================= */
+
 .logo-buscador {
   position: absolute;
   left: 50%;
@@ -57,7 +51,7 @@ body {
   transform: translateX(-30%);
 }
 
-/* Logo centrado siempre */
+
 .logo-principal {
   position: absolute;
   left: 50%;
@@ -73,12 +67,12 @@ body {
   margin-top: 20px;
 }
 
-/* Cuando buscador está activo → logo se corre */
+
 .header-container.buscar-activo .logo-principal {
   transform: translateX(120%);
 }
 
-/* Buscador */
+
 .buscador {
   display: flex;
   align-items: center;
@@ -108,9 +102,7 @@ body {
   padding: 0 0.3rem;
 }
 
-/* =========================
-   Derecha
-========================= */
+
 .seccion-derecha {
   display: flex;
   align-items: center;
@@ -156,23 +148,21 @@ body {
   font-size: 14px;
 }
 
-/* =========================
-   Modal Sidebar
-========================= */
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%; 
   height: 100%; 
-  background-color: rgba(0,0,0,0.4); /* 🔥 overlay oscuro */
+  background-color: rgba(0,0,0,0.4); 
   z-index: 1000;
   display: flex;
   justify-content: flex-start;
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Animaciones */
+
 @keyframes slideIn {
   from {
     transform: translateX(-100%);
@@ -187,7 +177,7 @@ body {
   to   { background-color: rgba(0,0,0,0.4); }
 }
 
-/* Sidebar dentro del overlay */
+
 .modal-contenido {
   background-color: #fff;
   width: 280px;
@@ -197,7 +187,7 @@ body {
   justify-content: space-between;
   box-shadow: 2px 0 15px rgba(0,0,0,0.2);
   animation: slideIn 0.3s ease-out;
-  overflow-y: auto; /* ✅ scroll vertical */
+  overflow-y: auto; 
 }
 
 
@@ -241,7 +231,7 @@ body {
   color: #000;
 }
 
-/* Lista menú */
+
 .menu-lista {
   list-style: none;
   margin: 0;
@@ -266,7 +256,7 @@ body {
   border-left: 3px solid #000;
 }
 
-/* Subcategorías */
+
 .submenu-categorias {
   margin-top: 0.4rem;
   margin-left: 1rem;
@@ -289,12 +279,13 @@ body {
   font-weight: 500;
 }
 
-/* Parte inferior */
+
 .menu-bottom {
   list-style: none;
   padding: 1rem 0;
   border-top: 1px solid #eee;
   margin: 0;
+  display: none;
 }
 
 .menu-bottom li {
@@ -338,29 +329,29 @@ body {
 
 .menu-wrapper {
   flex: 1;
-  overflow-y: auto; /* ✅ scroll en contenido largo */
+  overflow-y: auto; 
 }
 
-/* Pie fijo abajo */
+
 .menu-bottom {
   border-top: 1px solid #eee;
   padding: 1rem;
   flex-shrink: 0;
 }
 
-/* Subcategorías estilo acordeón */
+
 .submenu-categorias {
   list-style: none;
   margin: 0;
   padding-left: 1rem;
   border-left: 2px solid #ddd;
-  max-height: 0;            /* 🔥 oculto por defecto */
+  max-height: 0;           
   overflow: hidden;
   transition: max-height 0.3s ease;
 }
 
 .submenu-categorias.activo {
-  max-height: 500px;        /* 🔥 se despliega */
+  max-height: 500px;        
 }
 
 .submenu-categorias li {
@@ -379,9 +370,7 @@ body {
 }
 
 
-/* =========================
-   Mobile
-========================= */
+
 @media (max-width: 480px) {
   .logo-principal {
     position: absolute;

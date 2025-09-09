@@ -1,0 +1,188 @@
+
+
+.categoria-container {
+  padding: 20px;
+  max-width: 700px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.categoria-container h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+
+.categoria-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.categoria-form input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.categoria-form input:focus {
+  border-color: black;
+}
+
+.categoria-form button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.categoria-form button[type="submit"] {
+  background: black;
+  color: white;
+}
+
+.categoria-form button[type="submit"]:hover {
+  background: white;
+  color: black;
+  border: 1px solid black;
+}
+
+.categoria-form button.cancelar {
+  background: #ccc;
+  color: #333;
+}
+
+.categoria-form button.cancelar:hover {
+  background: #999;
+}
+
+
+.categoria-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.categoria-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.categoria-item span {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.categoria-actions button {
+  margin-left: 8px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.categoria-actions .editar {
+  background: black;
+  color: white;
+}
+
+.categoria-actions .editar:hover {
+  background: white;
+  color: black;
+  border: 1px solid black;
+}
+
+.categoria-actions .eliminar {
+  background: black;
+  color: white;
+}
+
+.categoria-actions .eliminar:hover {
+  background: white;
+  color: black;
+  border: 1px solid black;
+}
+
+
+.modal-categoria-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-categoria-box {
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  width: 360px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.modal-categoria-box h3 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #111;
+}
+
+.modal-categoria-box p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.modal-categoria-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+.modal-categoria-actions .btn-confirmar,
+.modal-categoria-actions .btn-cancelar {
+  background: black;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease-in-out;
+}
+
+.modal-categoria-actions .btn-confirmar:hover,
+.modal-categoria-actions .btn-cancelar:hover {
+  background: white;
+  color: black;
+  border: 1px solid black;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}

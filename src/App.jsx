@@ -13,6 +13,7 @@ import Footer from "./components/footer/Footer";
 import AdminPanel from "./components/PanelAdmin/AdminPanel";
 import Usuarios from "./components/PanelAdmin/Usuarios";
 import ProductoAdmin from "./components/PanelAdmin/ProductoAdmin";
+import Categoria from "./components/PanelAdmin/Categoria";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         <Route path="/configuracion" element={<AdminPanel />} />
         <Route path="/admin/usuario" element={<Usuarios />} />
         <Route path="/admin/producto" element={<ProductoAdmin />} />
+        <Route path="/admin/categoria" element={<Categoria />} />
 
         {/* 🔹 Login */}
         <Route path="/login" element={<Login />} />

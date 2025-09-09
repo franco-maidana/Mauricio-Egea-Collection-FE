@@ -11,6 +11,9 @@ const AdminPanel = () => {
       <Link to="/admin/producto" className="btn-admin">
         Productos
       </Link>
+      <Link to="/admin/categoria" className="btn-admin">
+        Categoria
+      </Link>
     </div>
   );
 };

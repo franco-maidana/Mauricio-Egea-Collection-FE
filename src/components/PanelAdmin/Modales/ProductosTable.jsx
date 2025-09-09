@@ -1,7 +1,7 @@
 import React from "react";
 import { DndContext, closestCenter,} from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy, arrayMove,} from "@dnd-kit/sortable";
-import SortableRow from "../../SortableRow";
+import SortableRow from "../SortableRow";
 import Global from "../../../helpers/Global";
 
 export default function ProductosTable({
