@@ -1,0 +1,189 @@
+.provincias-container {
+  padding: 2rem;
+}
+
+.tabla-provincias {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.tabla-provincias th,
+.tabla-provincias td {
+  border: 1px solid #ddd;
+  padding: 0.8rem;
+  text-align: left;
+}
+
+.tabla-provincias th {
+  background: #f8f8f8;
+}
+
+.tabla-provincias tr:hover {
+  background: #fafafa;
+}
+
+.btn-editar {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  cursor: pointer;
+  /* font-size: 0.9rem; */
+  border-radius: 4px;
+  background-color: black;
+  color: white;
+}
+
+.btn-editar:hover {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}
+
+/* 🔹 Modal provincias */
+.modal-provincia-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-provincia-box {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  text-align: center;
+}
+
+.modal-provincia-box h3 {
+  margin-bottom: 1rem;
+}
+
+.modal-provincia-box input {
+  width: 100%;
+  padding: 0.5rem;
+  margin: 1rem 0;
+  font-size: 1rem;
+}
+
+.modal-provincia-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.btn-guardar {
+  flex: 1;
+  padding: 0.6rem;
+  background-color: black;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-cancelar {
+  flex: 1;
+  padding: 0.6rem;
+  background-color: black;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+.btn-agregar-provincia {
+  margin-bottom: 1rem;
+  padding: 0.6rem 1rem;
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-agregar-provincia:hover {
+  background-color: #138496;
+}
+
+.btn-eliminar {
+  padding: 0.4rem 0.8rem;
+  margin-left: 0.5rem;
+  border: none;
+  cursor: pointer;
+  /* font-size: 0.9rem; */
+  border-radius: 4px;
+  background-color: black;
+  color: white;
+}
+
+.btn-eliminar:hover {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}
+
+
+/* 📱 Vista mobile */
+@media (max-width: 480px) {
+  .tabla-provincias,
+  .tabla-provincias thead,
+  .tabla-provincias tbody,
+  .tabla-provincias th,
+  .tabla-provincias td,
+  .tabla-provincias tr {
+    display: block;
+    width: 100%;
+  }
+
+  .tabla-provincias thead {
+    display: none; /* ocultamos cabecera */
+  }
+
+  .tabla-provincias tr {
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 0.8rem;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+
+  .tabla-provincias td {
+    border: none;
+    padding: 0.4rem 0;
+    text-align: left;
+    position: relative;
+  }
+
+  .tabla-provincias td::before {
+    content: attr(data-label); /* usamos data-label para simular cabecera */
+    font-weight: bold;
+    display: inline-block;
+    width: 120px;
+    color: #333;
+  }
+
+  .tabla-provincias td[data-label="Acciones"] {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-editar,
+  .btn-eliminar {
+    flex: 1;               /* ambos ocupan el mismo ancho */
+    min-width: 120px;      /* ancho mínimo para que no se achiquen demasiado */
+    text-align: center;
+  }
+}

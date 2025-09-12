@@ -198,13 +198,21 @@ const Header = () => {
             <div className="menu-wrapper">
               <ul className="menu-lista">
                 {/* Productos con submenú */}
-                <li className="menu-item">
-                  <button
-                    className="btn-categoria"
+                <li className="menu-item con-flecha">
+                  <div
+                    className="link-categoria"
                     onClick={() => setCategoriasAbiertas(!categoriasAbiertas)}
                   >
-                    Productos
-                  </button>
+                    <span>Productos</span>
+                    <span
+                      className={`flecha ${
+                        categoriasAbiertas ? "abierta" : ""
+                      }`}
+                    >
+                      ▸
+                    </span>
+                  </div>
+
                   <ul
                     className={`submenu-categorias ${
                       categoriasAbiertas ? "activo" : ""
@@ -214,8 +222,8 @@ const Header = () => {
                       <Link
                         to="/productos"
                         onClick={() => {
-                          setCategoriasAbiertas(false); // ✅ cierra submenú
-                          setModalAbierto(false);       // ✅ cierra modal
+                          setCategoriasAbiertas(false);
+                          setModalAbierto(false);
                         }}
                       >
                         Ver Todos
@@ -226,8 +234,8 @@ const Header = () => {
                         <Link
                           to={`/productos/categoria/${cat.categoria_id}`}
                           onClick={() => {
-                            setCategoriasAbiertas(false); // ✅ cierra submenú
-                            setModalAbierto(false);       // ✅ cierra modal
+                            setCategoriasAbiertas(false);
+                            setModalAbierto(false);
                           }}
                         >
                           {cat.nombre}
@@ -275,10 +283,7 @@ const Header = () => {
                       </button>
                     </>
                   ) : (
-                    <Link
-                      to="/login"
-                      onClick={() => setModalAbierto(false)}
-                    >
+                    <Link to="/login" onClick={() => setModalAbierto(false)}>
                       Iniciar sesión
                     </Link>
                   )}

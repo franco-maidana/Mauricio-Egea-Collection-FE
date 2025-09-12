@@ -1,0 +1,186 @@
+/* === Overlay Dirección === */
+/* .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+} */
+
+/* === Contenido Modal Dirección === */
+.modal-direccion {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  animation: fadeIn 0.3s ease;
+}
+
+/* === Overlay Detalle === */
+.modal-overlay-Detalle {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* === Contenido Modal Detalle === */
+.modal-detalle {
+  /* background: #fff; */
+  /* padding: 20px; */
+  border-radius: 12px;
+  width: 1200px;      /* 🔥 Más ancho en escritorio */
+  /* max-width: 95%; */
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content-detalle{
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 900px;
+  max-width: 90%;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  /* animation: fadeIn 0.3s ease; */
+}
+
+/* === Tabla Detalle === */
+.detalle-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin-top: 15px;
+}
+
+.detalle-table th {
+  background: #3498db;
+  color: #fff;
+  padding: 10px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.detalle-table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+}
+
+.detalle-table tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+.detalle-table tr:hover {
+  background: #f1f7ff;
+}
+
+.detalle-table img {
+  width: 60px;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* === Animación === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === Botón cerrar === */
+.btn-cerrar {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 15px;
+}
+
+.btn-cerrar:hover {
+  background: #c0392b;
+}
+
+/* === Responsive === */
+@media (max-width: 480px) {
+  /* Dirección */
+  .modal-direccion {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 8px;
+  }
+
+  /* Detalle */
+  .modal-detalle {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 8px;
+  }
+
+  /* Tabla Detalle en formato "cards" */
+  .detalle-table,
+  .detalle-table thead,
+  .detalle-table tbody,
+  .detalle-table tr,
+  .detalle-table td,
+  .detalle-table th {
+    display: block;
+    width: 100%;
+  }
+
+  .detalle-table thead {
+    display: none;
+  }
+
+  .detalle-table tr {
+    background: #fdfdfd;
+    border: 1px solid #ddd;
+    margin-bottom: 5px;
+    text-align: center; 
+  }
+
+  .detalle-table td {
+    display: flex;
+    justify-content: center;  
+    align-items: center;      
+    border: none;
+    font-size: 14px;
+  }
+
+  .detalle-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    color: #555;
+    flex: none;          
+    margin-right: 5px;   
+    text-align: left;    
+  }
+
+  /* Imagen más centrada y reducida */
+  .detalle-table img {
+    margin: 8px auto; /* 👈 centra la imagen */
+    display: block;
+    max-width: 80px;
+    height: auto;
+  }
+}
+

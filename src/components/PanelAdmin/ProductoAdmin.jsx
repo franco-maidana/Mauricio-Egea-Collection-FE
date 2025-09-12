@@ -97,7 +97,7 @@ export default function ProductoAdmin() {
   // 🔹 Traer talles
   const fetchTalles = useCallback(async () => {
     try {
-      const res = await fetch(`${Global.url}talles/list`, {
+      const res = await fetch(`${Global.url}talles/list-all`, {
         credentials: "include",
       });
       const data = await res.json();

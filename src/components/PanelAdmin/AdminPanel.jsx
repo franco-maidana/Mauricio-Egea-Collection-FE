@@ -14,6 +14,18 @@ const AdminPanel = () => {
       <Link to="/admin/categoria" className="btn-admin">
         Categoria
       </Link>
+      <Link to="/admin/colores" className="btn-admin">
+        Colores
+      </Link>
+      <Link to="/admin/provincias" className="btn-admin">
+        Provincias
+      </Link>
+      <Link to="/admin/ordenes" className="btn-admin">
+        Ordenes
+      </Link>
+            <Link to="/admin/talles" className="btn-admin">
+        Talles
+      </Link>
     </div>
   );
 };

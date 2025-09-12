@@ -1,0 +1,266 @@
+/* === Estilos generales contenedor === */
+.ordenes-container {
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.ordenes-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  background: #fdfdfd;
+}
+
+.ordenes-table th {
+  background: #3498db;
+  color: white;
+  text-align: left;
+  padding: 10px;
+  font-weight: 600;
+}
+
+.ordenes-table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+}
+
+.ordenes-table tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+.ordenes-table tr:hover {
+  background: #f1f7ff;
+}
+
+/* === Columnas Dirección y Acciones === */
+.ordenes-table th.col-direccion,
+.ordenes-table th.col-acciones {
+  text-align: center;
+  min-width: 120px;
+}
+
+.ordenes-table td[data-label="Dirección"],
+.ordenes-table td[data-label="Acciones"] {
+  text-align: center;
+}
+
+/* === Estado === */
+.estado {
+  font-weight: bold;
+  text-transform: capitalize;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.estado.pagado {
+  background: #e0f7e9;
+  color: #2e7d32;
+}
+
+/* === Pago === */
+.badge-pago {
+  background: #eee;
+  color: #333;
+  font-size: 12px;
+  padding: 3px 6px;
+  border-radius: 4px;
+}
+
+/* === Botón Ver Dirección === */
+.btn-ver-direccion {
+  background: #3498db;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  min-width: 110px;
+}
+
+.btn-ver-direccion:hover {
+  background: #2980b9;
+}
+
+/* === Botón Ver Detalle === */
+.btn-ver-detalle {
+  background: #2ecc71;   /* Verde */
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  min-width: 110px;
+  transition: background 0.2s ease;
+}
+
+.btn-ver-detalle:hover {
+  background: #27ae60;
+}
+
+/* === Contenedor de botones Acciones === */
+.acciones-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px; /* separación entre botones */
+}
+
+/* === Modal Dirección === */
+.modal-overlay-direcciones {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.btn-cerrar {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 15px;
+}
+
+.btn-cerrar:hover {
+  background: #c0392b;
+}
+
+.buscador-orden {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.buscador-orden input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.buscador-orden button {
+  background: #3498db;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.buscador-orden button:hover {
+  background: #2980b9;
+}
+
+.error-text {
+  color: #e74c3c;
+  margin-bottom: 10px;
+}
+
+
+/* === Vista mobile hasta 480px === */
+@media (max-width: 480px) {
+  .ordenes-table,
+  .ordenes-table thead,
+  .ordenes-table tbody,
+  .ordenes-table th,
+  .ordenes-table td,
+  .ordenes-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .ordenes-table thead {
+    display: none; /* Ocultamos cabecera en mobile */
+  }
+
+  .ordenes-table tr {
+    margin-bottom: 12px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 8px;
+    text-align: center;
+  }
+
+  .ordenes-table td {
+    border: none;
+    display: block;
+    padding: 4px 0;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .ordenes-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-weight: bold;
+    margin-bottom: 2px;
+    color: #555;
+    text-align: center;
+  }
+
+  /* Contenedor flex solo en botones */
+  .ordenes-table .acciones-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .ordenes-table .acciones-container button {
+    flex: 1;
+    min-width: 100px;
+  }
+
+  /* Modal full screen en mobile */
+  .modal-overlay-direcciones {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modal-content {
+    max-width: 90%;
+    border-radius: 8px;
+    margin-left: 10%;
+  }
+
+  .modal-content h3 {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .btn-cerrar {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
